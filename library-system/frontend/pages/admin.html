@@ -1,0 +1,47 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Admin</title><link rel="stylesheet" href="/styles.css"></head>
+<body>
+  <div class="container">
+    <a href="/">← กลับ</a>
+    <div class="card">
+      <h2>Admin Panel</h2>
+      <input id="search" class="input" placeholder="ค้นหาชื่อหรือรหัส">
+      <table class="table" id="logTable">
+        <thead><tr><th>ชื่อ</th><th>เวลาเข้า</th><th>หนังสือ</th><th>การกระทำ</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+<script>
+async function loadAll(){
+  const res = await fetch('/api/uselog/all');
+  const data = await res.json();
+  window._logs = data;
+  render(data);
+}
+function render(list){
+  const tbody = document.querySelector('#logTable tbody');
+  tbody.innerHTML = list.map(l => `
+    <tr>
+      <td>${l.User ? l.User.fullname : ''}</td>
+      <td>${l.timeIn||''}</td>
+      <td>${l.bookName||''}</td>
+      <td>
+        <button onclick="del(${l.id})" class="btn btn-danger">ลบ</button>
+      </td>
+    </tr>
+  `).join('');
+}
+async function del(id){
+  if(!confirm('ลบใช่หรือไม่?')) return;
+  const res = await fetch('/api/admin/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id})});
+  if(res.ok) loadAll();
+}
+document.getElementById('search').oninput = function(){
+  const q = this.value.toLowerCase();
+  render(window._logs.filter(l => (l.User && l.User.fullname.toLowerCase().includes(q)) || (l.User && l.User.studentId && l.User.studentId.includes(q))));
+}
+loadAll();
+</script>
+</body></html>
