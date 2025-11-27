@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>นาฬิกาดิจิทัลเรียลไทม์</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.clock-container {
+    background-color: #333; 
+    padding: 30px 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+#display {
+    font-size: 5em;
+    margin: 0;
+    color: #00FF00; /* สีเขียวนีออนสำหรับตัวเลข */
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 3px; 
+}
+
+
+
+
+
+
+
+
+</style>
+</head>
+<body>
+    <div class="clock-container">
+        <div id="display">00:00:00</div>
+    </div>
+
+    <script src="script.js">// อ้างอิงถึง Element แสดงผลเวลา
+
+// อ้างอิงถึง Element แสดงผลเวลา
+const display = document.getElementById('display');
+
+/**
+ * ฟังก์ชันหลักสำหรับอัปเดตเวลาปัจจุบัน
+ */
+function updateClock() {
+    // ดึงข้อมูลเวลาปัจจุบันจากระบบของเครื่องผู้ใช้
+    const now = new Date(); 
+
+    // ดึงชั่วโมง นาที และวินาที
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+
+    // จัดรูปแบบ: เติม 0 ด้านหน้าถ้าตัวเลขน้อยกว่า 10 (เช่น 9 -> 09)
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+
+    // สร้างรูปแบบการแสดงผล HH:MM:SS
+    const timeString = `${hours}:${minutes}:${seconds}`;
+
+    // อัปเดตการแสดงผลบนหน้าจอ
+    display.textContent = timeString;
+}
+
+// 1. เรียกใช้ฟังก์ชันทันที
+updateClock(); 
+
+// 2. กำหนดให้ฟังก์ชันถูกเรียกซ้ำทุก ๆ 1 วินาที (1000 มิลลิวินาที)
+// นี่คือสิ่งที่ทำให้เวลานับไปเรื่อย ๆ แบบเรียลไทม์
+setInterval(updateClock, 1000);
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

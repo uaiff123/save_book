@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบห้องสมุด</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(90deg, #0f0f0f 0%, #1A0033 60%, #663399 100%);
+            min-height: 100vh;
+            color: #f0f0f0;
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #6b7280;
+            border-radius: 6px;
+            border: 3px solid #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #9ca3af;
+        }
+
+        /* For Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #6b7280 #1a1a1a;
+        }
+
+        /* Base Button Style */
+        button {
+            background-color: #1f2937;
+            color: #ffffff;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hover Animation */
+        button:hover {
+            background-color: #374151;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(156, 163, 175, 0.2);
+        }
+
+        /* Animated background bubbles */
+        .bg-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(149, 76, 233, 0.15);
+            box-shadow: 0 0 15px 5px rgba(149, 76, 233, 0.3);
+            pointer-events: none;
+            z-index: -1;
+            will-change: transform, opacity;
+            mix-blend-mode: screen;
+            animation: bubbleFloat 8s ease-in-out infinite, bubblePulse 6s ease-in-out infinite;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Slight floating up and down with subtle horizontal shift */
+        @keyframes bubbleFloat {
+            0%, 100% {
+                transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translate3d(10px, -15px, 0) scale(1.1) rotate(5deg);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes bubblePulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: scale(1) rotate(0deg);
+                animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            50% {
+                opacity: 0.85;
+                transform: scale(1.2) rotate(3deg);
+                animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        }
+
+        /* Enhanced Gradient Card */
+        .gradient-card {
+            background: rgba(30, 0, 60, 0.5);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1.5px solid rgba(149, 76, 233, 0.15);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(99, 45, 165, 0.1), 0 0 12px rgba(149, 76, 233, 0.2);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .gradient-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 14px;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(147, 86, 250, 0.15), rgba(82, 36, 180, 0.15));
+            mix-blend-mode: overlay;
+            transition: background 0.4s ease;
+        }
+
+        .gradient-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 36px rgba(99, 45, 165, 0.15), 0 0 20px rgba(149, 76, 233, 0.3);
+            border-color: rgba(149, 76, 233, 0.35);
+            background: rgba(30, 0, 60, 0.55);
+        }
+
+        .gradient-card:hover::before {
+            background: linear-gradient(135deg, rgba(147, 86, 250, 0.25), rgba(82, 36, 180, 0.25));
+        }
+
+        /* Feature Icon */
+        .feature-icon {
+            background: linear-gradient(135deg, #7a39fb 0%, #981bfe 100%);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-icon:hover {
+            transform: rotate(12deg) scale(1.15);
+            box-shadow: 0 0 15px rgba(152, 27, 254, 0.6);
+        }
+
+        /* Enhanced Download button */
+        .download-btn {
+            background: linear-gradient(135deg, #7a39fb 0%, #981bfe 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(122, 57, 251, 0.3);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.5s ease;
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 16px 32px rgba(152, 27, 254, 0.65), 0 0 12px rgba(152, 27, 254, 0.6);
+            background-position: 100% 50%;
+        }
+
+        /* Improved Nav link underline animation */
+        .nav-link {
+            position: relative;
+            color: #ddd;
+            text-decoration: none;
+            font-weight: 500;
+            padding-bottom: 4px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #7a39fb;
+            border-radius: 2px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover {
+            color: #7a39fb;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Badge with subtle scaling */
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            background-color: rgba(122, 57, 251, 0.25);
+            color: #7a39fb;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            cursor: default;
+        }
+
+        .badge:hover {
+            transform: scale(1.08);
+            background-color: rgba(122, 57, 251, 0.35);
+        }
+
+        /* Layout Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(15, 15, 15, 0.8);
+            border-bottom: 1px solid rgba(149, 76, 233, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #7a39fb 0%, #981bfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo img {
+            margin-bottom: -7px;
+            height: 30px;
+            width: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #c9a8ff 0%, #7a39fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: #c9d1d9;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 2rem auto;
+            display: flex;
+            background: rgba(30, 0, 60, 0.5);
+            border-radius: 12px;
+            padding: 0.5rem;
+            border: 1px solid rgba(149, 76, 233, 0.2);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: #f0f0f0;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .search-box button {
+            border-radius: 8px;
+            background: linear-gradient(135deg, #7a39fb 0%, #981bfe 100%);
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #e0e0e0;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: #c9a8ff;
+            font-size: 1.4rem;
+        }
+
+        .card p {
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(149, 76, 233, 0.1);
+            margin-top: 4rem;
+            color: #8b949e;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+
+
+
+
+
+
+
+
+/* พื้นหลัง intro: ดำ → ม่วง */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #000000, #3f0a7a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* กล่องภาพ + กรอบ */
+.intro-wrap {
+  position: relative;
+  width: min(85vw, 850px);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 4px solid rgba(150, 70, 255, 0.9);      /* กรอบสีม่วงเรือง */
+  box-shadow: 0 0 25px rgba(150,70,255,0.6);     /* แสงรอบๆ */
+}
+
+/* ตัวรูป */
+.intro-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* แสงวิ่งเร็วขึ้น */
+.intro-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.95) 45%,
+    rgba(255,255,255,0.15) 60%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: translateX(-150%) skewX(-12deg);
+  mix-blend-mode: screen;
+  animation: sweep 0.5s ease-in-out 0.15s; /* วิ่งเร็วขึ้นมาก */
+}
+
+@keyframes sweep {
+  0%   { transform: translateX(-150%) skewX(-12deg); opacity: 0; }
+  20%  { opacity: 0.5; }
+  50%  { transform: translateX(10%) skewX(-12deg); opacity: 1; }
+  100% { transform: translateX(150%) skewX(-12deg); opacity: 0; }
+}
+
+/* fade-out */
+.fade-out {
+  animation: fadeOut .5s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; visibility: hidden; }
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Background Bubbles -->
+    <div id="bubbles-container"></div>
+<div id="intro">
+  <div class="intro-wrap">
+    <!-- เปลี่ยน src เป็นรูปของคุณ -->
+    <img src="logo.png" alt="logo11">
+  </div>
+</div>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">Library for you
+                    <img src="logo2.png" alt="logo22">
+                </div>
+                <ul class="nav-links">
+                    <li><a class="nav-link" href="signin.html">Login</a></li>
+                    <li><a class="nav-link" href="#download-btn">หมวดหมู่</a></li>
+                    <li><a class="nav-link" href="#download-btn">เกี่ยวกับ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class="hero">
+        <div class="container">
+            <h1>ระบบจัดการห้องสมุด</h1>
+            <p>บริการครบวงจรสำหรับการจัดการข้อมูลห้องสมุดและการค้นคว้า ด้วยระบบฐานข้อมูลออนไลน์ที่ทันสมัย</p>
+            <div class="search-box">
+                <input type="text" placeholder="ค้นหาหนังสือ, เอกสาร, หรือข้อมูล...">
+                <button class="download-btn">ค้นหา</button>
+            </div>
+        <button class="download-btn" onclick="window.location.href='#download-btn';" style="cursor:pointer;"> ดูบริการทั้งหมด  </button>
+        </div>
+    </section>
+
+    <section class="section" >
+        <div class="container" id="download-btn">
+            <h2 class="section-title" >บริการของเรา</h2>
+            <div class="cards-container" >
+                <div class="gradient-card card">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>เวลา</h3>
+                    
+                </div>
+                
+                <div class="gradient-card card" onclick="window.location.href='library.html';" style="cursor:pointer;" >
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>ห้องสมุด</h3>
+                    <p>ระบบบริหารจัดการห้องสมุดอัตโนมัติ ทั้งหนังสือ เอกสาร และสื่อการเรียนรู้</p>
+                    <span class="badge">บริการหลัก</span>
+                </div>
+                
+                <div class="gradient-card card">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>จำนวนหนังที่ยืมครั้ง</h3>
+                    <p>ฐานข้อมูลหนังสือและเอกสารครบวงจร พร้อมระบบจัดหมวดหมู่ที่ทันสมัย</p>
+                    <span class="badge">ทรัพยากร</span>
+                </div>
+                
+                <div class="gradient-card card" onclick="window.location.href='library.html';" style="cursor:pointer;">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3> การยืมหนังสือ</h3>
+                    <p>ระบบยืม-คืนหนังสือออนไลน์ พร้อมแจ้งเตือนและการจัดการสมาชิก</p>
+                    <span class="badge">บริการหลัก</span>
+                </div>
+                
+                <div class="gradient-card card"  onclick="window.location.href='ff.html';" style="cursor:pointer;" >
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3> ผู้จัดทำ </h3>
+                    <p>ผู้สร้างสมาชิก ผู้ร่วมสร้าง คนทำหลักผู้ช่วยจัดทำ รวมโครงสร้างที่จัดทำ ชื่อผู้สร้าง</p>
+                    <span class="badge">บริการ</span>
+                    <span class="badge">ประวัติ</span>
+                </div>
+                
+                <div class="gradient-card card" onclick="window.location.href='admin.html';" style="cursor:pointer;">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3> admin</h3>
+                    <p>ลงชื่อเข้าใช้ เพื่อเช็คอินหลังบ้าน รวมข้อมูล 5 ปีย้อนหลัง </p>
+                    <span class="badge">ระบบหลังบ้าน</span>
+                    <span class="badge">admin</span>
+                    <span class="badge">backend</span>                      
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <footer>
+        <div class="container">
+            <p>ระบบห้องสมุดดิจิทัล &copy; 2025-2056  - พัฒนาโดยผู้สร้าง</p>
+        </div>
+    </footer>
+
+    <script>
+
+        // สร้างฟองสบู่พื้นหลังแบบไดนามิก
+        function createBubbles() {
+            const bubblesContainer = document.getElementById('bubbles-container');
+            const bubbleCount = 15;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bg-bubble');
+                
+                // สุ่มขนาดและตำแหน่ง
+                const size = Math.random() * 120 + 30;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${posX}%`;
+                bubble.style.top = `${posY}%`;
+                bubble.style.animationDelay = `${delay}s`;
+                
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+        
+        // การจัดการฟอร์มค้นหา
+        document.addEventListener('DOMContentLoaded', function() {
+            createBubbles();
+            
+            const searchButton = document.querySelector('.search-box button');
+            const searchInput = document.querySelector('.search-box input');
+            
+            searchButton.addEventListener('click', function() {
+                performSearch(searchInput.value);
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch(this.value);
+                }
+            });
+            
+            function performSearch(query) {
+                if (query.trim() !== '') {
+                    alert(`กำลังค้นหา: "${query}" - ฟังก์ชันนี้จะเชื่อมต่อกับฐานข้อมูลในเวอร์ชันเต็ม`);
+                }
+            }
+            
+            // เพิ่มเอฟเฟกต์ hover ให้กับการ์ด
+            const cards = document.querySelectorAll('.gradient-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-6px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+    </script>
+    <script> setTimeout(() => {
+    const intro = document.getElementById('intro');
+    intro.classList.add('fade-out');
+    intro.addEventListener('animationend', () => {
+      intro.style.display = 'none';
+    }, { once: true });
+  }, 1200); // ระยะเวลาทั้ง intro = 1.2 วิ</script>
+</body>
+</html>
