@@ -519,7 +519,7 @@
         // ปรับปรุงประสิทธิภาพโดยลดจำนวน bubbles ลง
         function createBubbles() {
             const bubblesContainer = document.getElementById('bubbles-container');
-            const bubbleCount = 10; // ลดจาก 15 เหลือ 8
+            const bubbleCount = 6; // ลดจาก 15 เหลือ 8
             
             // ใช้ DocumentFragment เพื่อเพิ่มประสิทธิภาพ
             const fragment = document.createDocumentFragment();
@@ -529,10 +529,10 @@
                 bubble.classList.add('bg-bubble');
                 
                 // สุ่มขนาดและตำแหน่ง
-                const size = Math.random() * 40 + 10; // ขนาดเล็กกว่าเดิม
+                const size = Math.random() * 80 + 50; // ขนาดเล็กกว่าเดิม
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
-                const delay = Math.random() * 7;
+                const delay = Math.random() * 2;
                 
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
