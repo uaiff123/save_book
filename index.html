@@ -32,7 +32,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #e9e4a4 0%, #FFF9EB 60%, #FFF5E0 100%);
+            background: linear-gradient(135deg, #f3f1e1 0%, #f3efe5 60%, #f0eeea 100%);
             min-height: 100vh;
             color: #333333;
             position: relative;
@@ -43,6 +43,7 @@
             /* ป้องกันการกระตุกเมื่อมี scrollbar */
             overflow-y: scroll;
         }
+        
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -518,7 +519,7 @@
         // ปรับปรุงประสิทธิภาพโดยลดจำนวน bubbles ลง
         function createBubbles() {
             const bubblesContainer = document.getElementById('bubbles-container');
-            const bubbleCount = 8; // ลดจาก 15 เหลือ 8
+            const bubbleCount = 3; // ลดจาก 15 เหลือ 8
             
             // ใช้ DocumentFragment เพื่อเพิ่มประสิทธิภาพ
             const fragment = document.createDocumentFragment();
@@ -528,10 +529,10 @@
                 bubble.classList.add('bg-bubble');
                 
                 // สุ่มขนาดและตำแหน่ง
-                const size = Math.random() * 80 + 40; // ขนาดเล็กกว่าเดิม
+                const size = Math.random() * 60 + 40; // ขนาดเล็กกว่าเดิม
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
-                const delay = Math.random() * 3;
+                const delay = Math.random() * 10;
                 
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
