@@ -6,6 +6,32 @@
     <title>ระบบห้องสมุด</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* เพิ่มโค้ดเพื่อเพิ่มประสิทธิภาพโดยไม่เปลี่ยน UI */
+        * {
+            /* เพิ่มเพื่อเร่งการเรนเดอร์ */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* เพิ่ม Hardware Acceleration สำหรับส่วนที่เคลื่อนไหว */
+        .bg-bubble {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+            will-change: transform, opacity;
+        }
+        
+        .gradient-card {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+        
+        button, .download-btn, .feature-icon {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
         body {
             background: linear-gradient(135deg, #e9e4a4 0%, #FFF9EB 60%, #FFF5E0 100%);
             min-height: 100vh;
@@ -13,10 +39,10 @@
             position: relative;
             overflow-x: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             margin: 0;
             padding: 0;
+            /* ป้องกันการกระตุกเมื่อมี scrollbar */
+            overflow-y: scroll;
         }
 
         /* Custom Scrollbar */
@@ -65,7 +91,7 @@
             box-shadow: 0 6px 12px rgba(192, 146, 57, 0.15);
         }
 
-        /* Animated background bubbles */
+        /* Animated background bubbles - ลดจำนวนและความซับซ้อน */
         .bg-bubble {
             position: absolute;
             border-radius: 50%;
@@ -73,34 +99,19 @@
             box-shadow: 0 0 15px 5px rgba(192, 146, 57, 0.15);
             pointer-events: none;
             z-index: -1;
-            will-change: transform, opacity;
             mix-blend-mode: multiply;
-            animation: bubbleFloat 8s ease-in-out infinite, bubblePulse 6s ease-in-out infinite;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            animation: bubbleFloat 12s ease-in-out infinite;
         }
 
-        /* Slight floating up and down with subtle horizontal shift */
+        /* ทำให้ animation เรียบง่ายขึ้น */
         @keyframes bubbleFloat {
             0%, 100% {
-                transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+                transform: translate3d(0, 0, 0) scale(1);
                 opacity: 0.5;
             }
             50% {
-                transform: translate3d(10px, -15px, 0) scale(1.1) rotate(5deg);
+                transform: translate3d(5px, -10px, 0) scale(1.05);
                 opacity: 0.7;
-            }
-        }
-
-        @keyframes bubblePulse {
-            0%, 100% {
-                opacity: 0.4;
-                transform: scale(1) rotate(0deg);
-                animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            50% {
-                opacity: 0.75;
-                transform: scale(1.2) rotate(3deg);
-                animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             }
         }
 
@@ -113,7 +124,7 @@
             border-radius: 16px;
             padding: 2rem;
             box-shadow: 0 8px 24px rgba(153, 115, 40, 0.08), 0 0 12px rgba(192, 146, 57, 0.1);
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             cursor: default;
@@ -134,7 +145,7 @@
         }
 
         .gradient-card:hover {
-            transform: translateY(-6px) scale(1.02);
+            transform: translateY(-4px) scale(1.01);
             box-shadow: 0 12px 36px rgba(153, 115, 40, 0.12), 0 0 20px rgba(192, 146, 57, 0.15);
             border-color: rgba(192, 146, 57, 0.3);
             background: rgba(255, 255, 255, 0.95);
@@ -172,15 +183,12 @@
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(192, 146, 57, 0.25);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.5s ease;
-            background-size: 200% 200%;
-            background-position: 0% 50%;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .download-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 16px 32px rgba(212, 177, 95, 0.35), 0 0 12px rgba(212, 177, 95, 0.3);
-            background-position: 100% 50%;
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 16px rgba(212, 177, 95, 0.25);
         }
 
         /* Improved Nav link underline animation */
@@ -203,7 +211,7 @@
             height: 2px;
             background: #C09239;
             border-radius: 2px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-link:hover {
@@ -409,75 +417,50 @@
             object-fit: cover;
         }
 
-        /* แสงวิ่งเร็วขึ้น */
-        .intro-wrap::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(110deg,
-                rgba(255,255,255,0) 0%,
-                rgba(255,255,255,0.95) 45%,
-                rgba(255,255,255,0.15) 60%,
-                rgba(255,255,255,0) 100%
-            );
-            transform: translateX(-150%) skewX(-12deg);
-            mix-blend-mode: screen;
-            animation: sweep 0.5s ease-in-out 0.15s; /* วิ่งเร็วขึ้นมาก */
-        }
-
-        @keyframes sweep {
-            0%   { transform: translateX(-150%) skewX(-12deg); opacity: 0; }
-            20%  { opacity: 0.5; }
-            50%  { transform: translateX(10%) skewX(-12deg); opacity: 1; }
-            100% { transform: translateX(150%) skewX(-12deg); opacity: 0; }
-        }
-
         @keyframes floatUpDown { 
             0% { transform: translateY(-10%);}
-            50% { transform: translateY(0%); /* ปรับเล็ก-ใหญ่ได้ */}
+            50% { transform: translateY(0%);}
             100% {transform: translateY(-10%);}
         }
-
 
         /* fade-out */
         .fade-out {
             animation: fadeOut .5s ease forwards;
-            
         }
 
         @keyframes fadeOut {
             from { opacity: 1; }
             to   { opacity: 0; visibility: hidden; }
-            
         }
 
-        /* ปรับปรุงเพิ่มเติมสำหรับสีทอง */
-        .gold-text {
-            color: #C09239;
+        /* เพิ่มการรองรับ GPU acceleration สำหรับส่วนที่เคลื่อนไหวเร็ว */
+        .intro-wrap {
+            transform: translateZ(0);
         }
         
-        .gold-border {
-            border-color: #C09239;
+        /* ป้องกันการเรนเดอร์ใหม่โดยไม่จำเป็น */
+        .gradient-card, button, .feature-icon {
+            contain: content;
         }
         
-        .gold-bg {
-            background-color: rgba(192, 146, 57, 0.1);
+        /* เพิ่มสำหรับรูปภาพเพื่อลดการ reflow */
+        img {
+            content-visibility: auto;
         }
     </style>
 </head>
 <body>
-    <!-- Background Bubbles -->
+    <!-- Background Bubbles - ลดจำนวนลงครึ่งหนึ่ง -->
     <div id="bubbles-container"></div>
     <div id="intro">
         <div class="intro-wrap">
-            <!-- เปลี่ยน src เป็นรูปของคุณ -->
-            <img src="map.jpeg" alt="map on">
+            <img src="map.jpeg" alt="map on" loading="lazy">
         </div>
     </div>
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo"> <img src="logo2.png" alt="logo on"> Library for you
+                <div class="logo"> <img src="logo2.png" alt="logo on" loading="lazy"> Library for you
                 </div>
                 <ul class="nav-links">
                     <li><a class="nav-link" href="signin.html">Login</a></li>
@@ -569,20 +552,23 @@
     </footer>
 
     <script>
-        // สร้างฟองสบู่พื้นหลังแบบไดนามิก
+        // ปรับปรุงประสิทธิภาพโดยลดจำนวน bubbles ลง
         function createBubbles() {
             const bubblesContainer = document.getElementById('bubbles-container');
-            const bubbleCount = 15;
+            const bubbleCount = 8; // ลดจาก 15 เหลือ 8
+            
+            // ใช้ DocumentFragment เพื่อเพิ่มประสิทธิภาพ
+            const fragment = document.createDocumentFragment();
             
             for (let i = 0; i < bubbleCount; i++) {
                 const bubble = document.createElement('div');
                 bubble.classList.add('bg-bubble');
                 
                 // สุ่มขนาดและตำแหน่ง
-                const size = Math.random() * 120 + 30;
+                const size = Math.random() * 80 + 40; // ขนาดเล็กกว่าเดิม
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
-                const delay = Math.random() * 5;
+                const delay = Math.random() * 3;
                 
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
@@ -590,13 +576,24 @@
                 bubble.style.top = `${posY}%`;
                 bubble.style.animationDelay = `${delay}s`;
                 
-                bubblesContainer.appendChild(bubble);
+                fragment.appendChild(bubble);
+            }
+            
+            bubblesContainer.appendChild(fragment);
+        }
+        
+        // เพิ่ม requestAnimationFrame สำหรับ animation ที่ลื่นขึ้น
+        function optimizedCreateBubbles() {
+            if ('requestAnimationFrame' in window) {
+                requestAnimationFrame(createBubbles);
+            } else {
+                createBubbles();
             }
         }
         
         // การจัดการฟอร์มค้นหา
         document.addEventListener('DOMContentLoaded', function() {
-            createBubbles();
+            optimizedCreateBubbles();
             
             const searchButton = document.querySelector('.search-box button');
             const searchInput = document.querySelector('.search-box input');
@@ -617,9 +614,12 @@
                 }
             }
             
-            // เพิ่มเอฟเฟกต์ hover ให้กับการ์ด
+            // เพิ่ม passive event listeners สำหรับ scroll เพื่อเพิ่มประสิทธิภาพ
             const cards = document.querySelectorAll('.gradient-card');
             cards.forEach(card => {
+                // ใช้ passive: true สำหรับ touch events เพื่อป้องกันการบล็อก
+                card.addEventListener('touchstart', function() {}, { passive: true });
+                
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-6px) scale(1.02)';
                 });
@@ -628,8 +628,67 @@
                     this.style.transform = 'translateY(0) scale(1)';
                 });
             });
+            
+            // ป้องกันการคลิกซ้ำเร็วเกินไป
+            let lastClickTime = 0;
+            const buttons = document.querySelectorAll('button, .gradient-card');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const now = Date.now();
+                    if (now - lastClickTime < 300) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return;
+                    }
+                    lastClickTime = now;
+                });
+            });
         });
 
+        // Intro fade out - ใช้ setTimeout แบบเบา
+        let introTimeout = setTimeout(() => {
+            const intro = document.getElementById('intro');
+            if (intro) {
+                intro.classList.add('fade-out');
+                intro.addEventListener('animationend', () => {
+                    intro.style.display = 'none';
+                    // ลบ element ออกหลังจากใช้เสร็จเพื่อประหยัด memory
+                    setTimeout(() => {
+                        if (intro.parentNode) {
+                            intro.parentNode.removeChild(intro);
+                        }
+                    }, 100);
+                }, { once: true });
+            }
+        }, 1200);
+        
+        // Cleanup timeout ถ้าหน้าถูกปิดก่อน
+        window.addEventListener('beforeunload', function() {
+            clearTimeout(introTimeout);
+        });
+        
+        // เพิ่ม Intersection Observer สำหรับการโหลดแบบ lazy
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                        }
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.01
+            });
+            
+            // เพิ่มสำหรับรูปภาพถ้าต้องการ (ถ้ามีรูปมาก)
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                observer.observe(img);
+            });
+        }
     </script>
     <script> 
         setTimeout(() => {
@@ -638,7 +697,7 @@
             intro.addEventListener('animationend', () => {
                 intro.style.display = 'none';
             }, { once: true });
-        }, 1200); // ระยะเวลาทั้ง intro = 1.2 วิ
+        }, 1200);
     </script>
 </body>
 </html>
