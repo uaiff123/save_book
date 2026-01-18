@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบห้องสมุด</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e9e4a4 0%, #FFF9EB 60%, #FFF5E0 100%);
+            min-height: 100vh;
+            color: #333333;
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f5f5f5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #C09239;
+            border-radius: 6px;
+            border: 3px solid #f5f5f5;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #D4B15F;
+        }
+
+        /* For Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #C09239 #f5f5f5;
+        }
+
+        /* Base Button Style */
+        button {
+            background-color: #FFF5E0;
+            color: #5A4A2E;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(192, 146, 57, 0.2);
+        }
+
+        /* Hover Animation */
+        button:hover {
+            background-color: #FFEFD1;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(192, 146, 57, 0.15);
+        }
+
+        /* Animated background bubbles */
+        .bg-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(192, 146, 57, 0.12);
+            box-shadow: 0 0 15px 5px rgba(192, 146, 57, 0.15);
+            pointer-events: none;
+            z-index: -1;
+            will-change: transform, opacity;
+            mix-blend-mode: multiply;
+            animation: bubbleFloat 8s ease-in-out infinite, bubblePulse 6s ease-in-out infinite;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Slight floating up and down with subtle horizontal shift */
+        @keyframes bubbleFloat {
+            0%, 100% {
+                transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate3d(10px, -15px, 0) scale(1.1) rotate(5deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes bubblePulse {
+            0%, 100% {
+                opacity: 0.4;
+                transform: scale(1) rotate(0deg);
+                animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            50% {
+                opacity: 0.75;
+                transform: scale(1.2) rotate(3deg);
+                animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        }
+
+        /* Enhanced Gradient Card */
+        .gradient-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1.5px solid rgba(192, 146, 57, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(153, 115, 40, 0.08), 0 0 12px rgba(192, 146, 57, 0.1);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .gradient-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 14px;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(192, 146, 57, 0.08), rgba(153, 115, 40, 0.08));
+            mix-blend-mode: multiply;
+            transition: background 0.4s ease;
+        }
+
+        .gradient-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 36px rgba(153, 115, 40, 0.12), 0 0 20px rgba(192, 146, 57, 0.15);
+            border-color: rgba(192, 146, 57, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .gradient-card:hover::before {
+            background: linear-gradient(135deg, rgba(192, 146, 57, 0.15), rgba(153, 115, 40, 0.15));
+        }
+
+        /* Feature Icon */
+        .feature-icon {
+            background: linear-gradient(135deg, #C09239 0%, #D4B15F 100%);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-icon:hover {
+            transform: rotate(12deg) scale(1.15);
+            box-shadow: 0 0 15px rgba(192, 146, 57, 0.4);
+        }
+
+        /* Enhanced Download button */
+        .download-btn {
+            background: linear-gradient(135deg, #C09239 0%, #D4B15F 100%);
+            border: none;
+            border-radius: 8px;
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(192, 146, 57, 0.25);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.5s ease;
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 16px 32px rgba(212, 177, 95, 0.35), 0 0 12px rgba(212, 177, 95, 0.3);
+            background-position: 100% 50%;
+        }
+
+        /* Improved Nav link underline animation */
+        .nav-link {
+            position: relative;
+            color: #666666;
+            text-decoration: none;
+            font-weight: 500;
+            padding-bottom: 4px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #C09239;
+            border-radius: 2px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover {
+            color: #C09239;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Badge with subtle scaling */
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            background-color: rgba(192, 146, 57, 0.15);
+            color: #9C7A3A;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            cursor: default;
+        }
+
+        .badge:hover {
+            transform: scale(1.08);
+            background-color: rgba(192, 146, 57, 0.25);
+        }
+
+        /* Layout Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid rgba(192, 146, 57, 0.15);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #C09239 0%, #D4B15F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo img {
+            margin-bottom: -7%;
+            height: 60px;
+            width: 60px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #9C7A3A 0%, #C09239 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: #666666;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 2rem auto;
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 0.5rem;
+            border: 1px solid rgba(192, 146, 57, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: #333333;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .search-box button {
+            border-radius: 8px;
+            background: linear-gradient(135deg, #C09239 0%, #D4B15F 100%);
+            color: #FFFFFF;
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #5A4A2E;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: #9C7A3A;
+            font-size: 1.4rem;
+        }
+
+        .card p {
+            color: #666666;
+            line-height: 1.6;
+        }
+
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(192, 146, 57, 0.15);
+            margin-top: 4rem;
+            color: #9C7A3A;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* พื้นหลัง intro: ขาว → ทอง */
+        #intro {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #ffffff, #FFF5E0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        /* กล่องภาพ + กรอบ */
+        .intro-wrap {
+            position: relative;
+            width: min(85vw, 850px);
+            border-radius: 18px;
+            overflow: hidden;
+            border: 4px solid rgba(192, 146, 57, 0.9);      /* กรอบสีทองเรือง */
+            box-shadow: 0 0 25px rgba(192, 146, 57, 0.5);     /* แสงรอบๆ */
+            animation: floatUpDown  1.5s ease-in-out 0.15s;
+        }
+
+        /* ตัวรูป */
+        .intro-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* แสงวิ่งเร็วขึ้น */
+        .intro-wrap::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.95) 45%,
+                rgba(255,255,255,0.15) 60%,
+                rgba(255,255,255,0) 100%
+            );
+            transform: translateX(-150%) skewX(-12deg);
+            mix-blend-mode: screen;
+            animation: sweep 0.5s ease-in-out 0.15s; /* วิ่งเร็วขึ้นมาก */
+        }
+
+        @keyframes sweep {
+            0%   { transform: translateX(-150%) skewX(-12deg); opacity: 0; }
+            20%  { opacity: 0.5; }
+            50%  { transform: translateX(10%) skewX(-12deg); opacity: 1; }
+            100% { transform: translateX(150%) skewX(-12deg); opacity: 0; }
+        }
+
+        @keyframes floatUpDown { 
+            0% { transform: translateY(-10%);}
+            50% { transform: translateY(0%); /* ปรับเล็ก-ใหญ่ได้ */}
+            100% {transform: translateY(-10%);}
+        }
+
+
+        /* fade-out */
+        .fade-out {
+            animation: fadeOut .5s ease forwards;
+            
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to   { opacity: 0; visibility: hidden; }
+            
+        }
+
+        /* ปรับปรุงเพิ่มเติมสำหรับสีทอง */
+        .gold-text {
+            color: #C09239;
+        }
+        
+        .gold-border {
+            border-color: #C09239;
+        }
+        
+        .gold-bg {
+            background-color: rgba(192, 146, 57, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Bubbles -->
+    <div id="bubbles-container"></div>
+    <div id="intro">
+        <div class="intro-wrap">
+            <!-- เปลี่ยน src เป็นรูปของคุณ -->
+            <img src="map.jpeg" alt="map on">
+        </div>
+    </div>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo"> <img src="logo2.png" alt="logo on"> Library for you
+                </div>
+                <ul class="nav-links">
+                    <li><a class="nav-link" href="signin.html">Login</a></li>
+                    <li><a class="nav-link" href="#download-btn">หมวดหมู่</a></li>
+                    <li><a class="nav-link" href="#download-btn">เกี่ยวกับ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class="hero">
+        <div class="container">
+            <h1>ระบบจัดการห้องสมุด</h1>
+            <p>บริการครบวงจรสำหรับการจัดการข้อมูลห้องสมุดและการค้นคว้า ด้วยระบบฐานข้อมูลออนไลน์ที่ทันสมัย</p>
+            <div class="search-box">
+                <input type="text" placeholder="ค้นหาหนังสือ, เอกสาร, หรือข้อมูล...">
+                <button class="download-btn">ค้นหา</button>
+            </div>
+            <button class="download-btn" onclick="window.location.href='#download-btn';" style="cursor:pointer;"> ดูบริการทั้งหมด  </button>
+        </div>
+    </section>
+
+    <section class="section" >
+        <div class="container" id="download-btn">
+            <h2 class="section-title" >บริการของเรา</h2>
+            <div class="cards-container" >
+                <div class="gradient-card card">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>เวลาเปิด-ปิด</h3>
+                    <p>ข้อมูลเวลาทำการของห้องสมุดและการบริการต่าง ๆ</p>
+                    <span class="badge">ข้อมูลพื้นฐาน</span>
+                </div>
+                
+                <div class="gradient-card card" onclick="window.location.href='library.html';" style="cursor:pointer;" >
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>ห้องสมุดดิจิทัล</h3>
+                    <p>ระบบบริหารจัดการห้องสมุดอัตโนมัติ ทั้งหนังสือ เอกสาร และสื่อการเรียนรู้</p>
+                    <span class="badge">บริการหลัก</span>
+                </div>
+                
+                <div class="gradient-card card">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>สถิติการยืมหนังสือ</h3>
+                    <p>แสดงจำนวนครั้งที่หนังสือถูกยืม พร้อมสถิติย้อนหลัง</p>
+                    <span class="badge">รายงานสถิติ</span>
+                </div>
+                
+                <div class="gradient-card card" onclick="window.location.href='library.html';" style="cursor:pointer;">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>ระบบยืม-คืนหนังสือ</h3>
+                    <p>ระบบยืม-คืนหนังสือออนไลน์ พร้อมแจ้งเตือนและการจัดการสมาชิก</p>
+                    <span class="badge">บริการหลัก</span>
+                </div>
+                
+                <div class="gradient-card card"  onclick="window.location.href='ff.html';" style="cursor:pointer;" >
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>ทีมผู้พัฒนา</h3>
+                    <p>รู้จักทีมผู้สร้างระบบ รายชื่อผู้พัฒนาและผู้มีส่วนร่วม</p>
+                    <span class="badge">เกี่ยวกับเรา</span>
+                </div>
+                
+                <div class="gradient-card card" onclick="window.location.href='admin.html';" style="cursor:pointer;">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>ระบบบริหารจัดการ</h3>
+                    <p>ลงชื่อเข้าใช้ระบบหลังบ้าน เพื่อจัดการข้อมูลและดูรายงานสถิติ</p>
+                    <span class="badge">ระบบหลังบ้าน</span>
+                    <span class="badge">สำหรับผู้ดูแลระบบ</span>                      
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>ระบบห้องสมุดดิจิทัล &copy; 2025-2056  - พัฒนาโดยทีม Library for You</p>
+            <p>ติดต่อ: info@libraryforyou.com | โทร: 02-123-4567</p>
+        </div>
+    </footer>
+
+    <script>
+        // สร้างฟองสบู่พื้นหลังแบบไดนามิก
+        function createBubbles() {
+            const bubblesContainer = document.getElementById('bubbles-container');
+            const bubbleCount = 15;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bg-bubble');
+                
+                // สุ่มขนาดและตำแหน่ง
+                const size = Math.random() * 120 + 30;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${posX}%`;
+                bubble.style.top = `${posY}%`;
+                bubble.style.animationDelay = `${delay}s`;
+                
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+        
+        // การจัดการฟอร์มค้นหา
+        document.addEventListener('DOMContentLoaded', function() {
+            createBubbles();
+            
+            const searchButton = document.querySelector('.search-box button');
+            const searchInput = document.querySelector('.search-box input');
+            
+            searchButton.addEventListener('click', function() {
+                performSearch(searchInput.value);
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch(this.value);
+                }
+            });
+            
+            function performSearch(query) {
+                if (query.trim() !== '') {
+                    alert(`กำลังค้นหา: "${query}" - ฟังก์ชันนี้จะเชื่อมต่อกับฐานข้อมูลในเวอร์ชันเต็ม`);
+                }
+            }
+            
+            // เพิ่มเอฟเฟกต์ hover ให้กับการ์ด
+            const cards = document.querySelectorAll('.gradient-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-6px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+    </script>
+    <script> 
+        setTimeout(() => {
+            const intro = document.getElementById('intro');
+            intro.classList.add('fade-out');
+            intro.addEventListener('animationend', () => {
+                intro.style.display = 'none';
+            }, { once: true });
+        }, 1200); // ระยะเวลาทั้ง intro = 1.2 วิ
+    </script>
+</body>
+</html>
