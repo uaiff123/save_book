@@ -32,7 +32,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f3f1e1 0%, #f3efe5 60%, #f0eeea 100%);
+            background: linear-gradient(135deg, #e9e4a4 0%, #FFF9EB 60%, #FFF5E0 100%);
             min-height: 100vh;
             color: #333333;
             position: relative;
@@ -493,7 +493,42 @@
                     <p>ข้อมูลเวลาทำการของห้องสมุดและการบริการต่าง ๆ</p>
                     <span class="badge">ข้อมูลพื้นฐาน</span>
                 </div>
-
+                
+                <div class="gradient-card card" onclick="window.location.href='library.html';" style="cursor:pointer;" >
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>ห้องสมุดดิจิทัล</h3>
+                    <p>ระบบบริหารจัดการห้องสมุดอัตโนมัติ ทั้งหนังสือ เอกสาร และสื่อการเรียนรู้</p>
+                    <span class="badge">บริการหลัก</span>
+                </div>
+                
+                <div class="gradient-card card">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>สถิติการยืมหนังสือ</h3>
+                    <p>แสดงจำนวนครั้งที่หนังสือถูกยืม พร้อมสถิติย้อนหลัง</p>
+                    <span class="badge">รายงานสถิติ</span>
+                </div>
+                
+                <div class="gradient-card card" onclick="window.location.href='library.html';" style="cursor:pointer;">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>ระบบยืม-คืนหนังสือ</h3>
+                    <p>ระบบยืม-คืนหนังสือออนไลน์ พร้อมแจ้งเตือนและการจัดการสมาชิก</p>
+                    <span class="badge">บริการหลัก</span>
+                </div>
+                
+                <div class="gradient-card card"  onclick="window.location.href='ff.html';" style="cursor:pointer;" >
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>ทีมผู้พัฒนา</h3>
+                    <p>รู้จักทีมผู้สร้างระบบ รายชื่อผู้พัฒนาและผู้มีส่วนร่วม</p>
+                    <span class="badge">เกี่ยวกับเรา</span>
+                </div>
                 
                 <div class="gradient-card card" onclick="window.location.href='admin.html';" style="cursor:pointer;">
                     <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
@@ -519,7 +554,7 @@
         // ปรับปรุงประสิทธิภาพโดยลดจำนวน bubbles ลง
         function createBubbles() {
             const bubblesContainer = document.getElementById('bubbles-container');
-            const bubbleCount = 5; // ลดจาก 15 เหลือ 8
+            const bubbleCount = 8; // ลดจาก 15 เหลือ 8
             
             // ใช้ DocumentFragment เพื่อเพิ่มประสิทธิภาพ
             const fragment = document.createDocumentFragment();
@@ -529,10 +564,10 @@
                 bubble.classList.add('bg-bubble');
                 
                 // สุ่มขนาดและตำแหน่ง
-                const size = Math.random() * 10 + 10; // ขนาดเล็กกว่าเดิม
+                const size = Math.random() * 80 + 40; // ขนาดเล็กกว่าเดิม
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
-                const delay = Math.random() * 16;
+                const delay = Math.random() * 3;
                 
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
