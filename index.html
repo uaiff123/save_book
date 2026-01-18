@@ -329,12 +329,15 @@
             animation: floatUpDown 1.3s ease-in-out infinite;            
         }
 
-        /* ตัวรูป */
+        /* ตัวรูป */ 
         .intro-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+            max-width: 600px; /* รูปจะใหญ่ได้ไม่เกิน 600px */
+            width: 100%; /* แต่ถ้าจอเล็กกว่า 600px รูปจะกว้างเต็มจอพอดี */
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+}
 
         .intro-wrap h1 {
             position: relative;
@@ -458,8 +461,8 @@
                     <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
                         <i class="fas fa-book"></i>
                     </div>
-                    <h3>ห้องสมุดดิจิทัล</h3>
-                    <p>ระบบบริหารจัดการห้องสมุดอัตโนมัติ ทั้งหนังสือ เอกสาร และสื่อการเรียนรู้</p>
+                    <h3>ห้อง อินเทอร์เน็ต</h3>
+                    <p></p>
                     <span class="badge">บริการหลัก</span>
                 </div>
             </div>
