@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบห้องสมุด</title>
+    
     <style>
         /* Reset และ base styles - ใช้วิธีที่เบาลง */
         * {
@@ -319,37 +320,41 @@
             will-change: opacity;
         }
 
-          .intro-wrap {
-            position: relative;
-            width: min(85vw, 850px);
-            border-radius: 18px;
-            overflow: hidden;
-            border: 4px solid rgba(192, 146, 57, 0.9);      /* กรอบสีทองเรือง */
-            box-shadow: 0 0 25px rgba(192, 146, 57, 0.6);     /* แสงรอบๆ */
-            animation: floatUpDown 1.3s ease-in-out infinite;            
-        }
+.intro-wrap {
+    position: relative;
+    width: min(85vw, 850px);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 4px solid rgba(192, 146, 57, 0.9);
+    box-shadow: 0 0 25px rgba(192, 146, 57, 0.6);
+    animation: floatUpDown 1.3s ease-in-out infinite;
+    
+    /* เพิ่ม 3 บรรทัดนี้ */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem; /* เพิ่มพื้นที่ว่างข้างในให้ดูสวยขึ้น */
+    background: white; /* ใส่พื้นหลังกันโปร่งแสง */
+}
 
         /* ตัวรูป */ 
         .intro-wrap img {
-            max-width: 600px; /* รูปจะใหญ่ได้ไม่เกิน 600px */
-            width: 100%; /* แต่ถ้าจอเล็กกว่า 600px รูปจะกว้างเต็มจอพอดี */
+            max-width: 300px; /* รูปจะใหญ่ได้ไม่เกิน 600px */
+            width: 50%; /* แต่ถ้าจอเล็กกว่า 600px รูปจะกว้างเต็มจอพอดี */
             height: auto;
             object-fit: contain;
             display: block;
             margin: 0 auto;
 }
 
-        .intro-wrap h1 {
-            position: relative;
-            width: min(85vw, 850px);
-            border-radius: 18px;
-            overflow: hidden;
-            border: 4px solid rgba(192, 146, 57, 0.9);      /* กรอบสีทองเรือง */
-            box-shadow: 0 0 25px rgba(192, 146, 57, 0.6);     /* แสงรอบๆ */
-            animation: floatUpDown 3s ease-in-out infinite;
-            font-size: 3.5rem;
-            text-align: center;
-        }
+.intro-wrap h1 {
+    position: relative;
+    /* width: min(85vw, 850px);  <-- ลบบรรทัดนี้ออก */
+    /* border: 4px solid ...;   <-- ลบบรรทัดนี้ออกถ้าไม่อยากให้หัวข้อมีกรอบแยก */
+    font-size: 3.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem; /* เพิ่มระยะห่างระหว่างตัวหนังสือกับรูป */
+}
 
         .intro-wrap h1::after {
             content: "";
@@ -410,7 +415,7 @@
     <div id="bubbles-container"></div>
     
     <div id="intro">
-        <div class="intro-wrap">|
+        <div class="intro-wrap">
             <h1>ตึกวิทยบริการ</h1>
             <img src="img/map.jpeg" alt="map on">
         </div>
