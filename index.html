@@ -141,19 +141,6 @@
             transform: translateY(-1px);
         }
 
-        .nav-link {
-            position: relative;
-            color: #666666;
-            text-decoration: none;
-            font-weight: 500;
-            padding-bottom: 4px;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .nav-link:hover {
-            color: #C09239;
-        }
 
         .badge {
             display: inline-block;
@@ -200,12 +187,6 @@
         .logo img {
             height: 50px;
             width: 50px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
         }
 
         .hero {
@@ -294,9 +275,6 @@
         }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
             
             .hero h1 {
                 font-size: 2rem;
@@ -429,19 +407,14 @@
                     <img src="img/logo2.png" alt="logo on">
                     Library for you
                 </div>
-                <ul class="nav-links">
-                    <li><a class="nav-link" href="signin.html">Login</a></li>
-                    <li><a class="nav-link" href="#download-btn">หมวดหมู่</a></li>
-                    <li><a class="nav-link" href="#download-btn">เกี่ยวกับ</a></li>
-                </ul>
             </nav>
         </div>
     </header>
     
     <section class="hero">
         <div class="container">
-            <h1>ระบบจัดการห้องสมุด</h1>
-            <p>บริการครบวงจรสำหรับการจัดการข้อมูลห้องสมุดและการค้นคว้า ด้วยระบบฐานข้อมูลออนไลน์ที่ทันสมัย</p>
+            <h1>การแสดงควมคิดเห็น</h1>
+            <p>ขอขอบคุณพวกท่านที่ได้เข้าใช่เว็บไซต์ที่พวกเราได้สร้าง หากท่านมีความประสงค์อยากเสนอแนะท่านสามารถแสดงความคิดเห็น</p>
             <div class="search-box">
                 <input type="text" placeholder="ค้นหาหนังสือ, เอกสาร, หรือข้อมูล...">
                 <button class="download-btn">ค้นหา</button>
@@ -467,7 +440,28 @@
                     <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
                         <i class="fas fa-book"></i>
                     </div>
-                    <h3>ห้อง อินเทอร์เน็ต</h3>
+                    <h3>ห้องอินเทอร์เน็ต 1</h3>
+                    <p></p>
+                    <span class="badge">บริการหลัก</span>
+                </div>
+
+                    <div class="gradient-card card" onclick="window.location.href='library.html';">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>ห้องอินเทอร์เน็ต 2</h3>
+                    <p></p>
+                    <span class="badge">บริการหลัก</span>
+                </div>
+
+
+
+                
+                    <div class="gradient-card card" onclick="window.location.href='library.html';">
+                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>ห้องสมุด และ ห้องพักสำรรับการพักผ่อน</h3>
                     <p></p>
                     <span class="badge">บริการหลัก</span>
                 </div>
