@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ห้องอินเทอร์เน็ต 1</title>
-      <link rel="icon" type="image" href="img/logo2.png">
+    <link rel="icon" type="image" href="img/logo2.png">
     <style>
         /* --- CSS STYLES --- */
 
@@ -110,38 +110,61 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.85);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 3000;
+            backdrop-filter: blur(5px);
         }
 
         .overlay-content {
-            background: white;
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
             border-radius: 20px;
             padding: 2.5rem;
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
             text-align: center;
             animation: fadeInUp 0.4s ease-out;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .overlay-exit-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeInUp 0.4s ease-out;
+            border: 1px solid rgba(255, 107, 107, 0.2);
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(20px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
         .overlay-icon {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .overlay-warning-icon {
             font-size: 4rem;
-            color: #ff6b6b;
+            color: #ff9800;
             margin-bottom: 1rem;
         }
 
@@ -155,8 +178,8 @@
         .overlay-message {
             color: #666;
             font-size: 1.1rem;
-            margin-bottom: 2rem;
-            line-height: 1.5;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
         }
 
         .overlay-btn {
@@ -170,11 +193,38 @@
             box-shadow: 0 6px 15px rgba(138, 43, 226, 0.25);
             transition: all 0.3s ease;
             font-size: 1rem;
+            margin: 0 0.5rem;
+            min-width: 120px;
         }
 
         .overlay-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 25px rgba(138, 43, 226, 0.35);
+        }
+
+        .overlay-btn-exit {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.25);
+        }
+
+        .overlay-btn-exit:hover {
+            box-shadow: 0 12px 25px rgba(255, 107, 107, 0.35);
+        }
+
+        .overlay-btn-cancel {
+            background: linear-gradient(135deg, #6c757d 0%, #868e96 100%);
+            box-shadow: 0 6px 15px rgba(108, 117, 125, 0.25);
+        }
+
+        .overlay-btn-cancel:hover {
+            box-shadow: 0 12px 25px rgba(108, 117, 125, 0.35);
+        }
+
+        .overlay-btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         /* Form Styles */
@@ -342,7 +392,7 @@
                 font-size: 0.9rem;
             }
             
-            .overlay-content {
+            .overlay-content, .overlay-exit-content {
                 padding: 1.5rem;
                 width: 85%;
             }
@@ -354,6 +404,16 @@
             .overlay-title {
                 font-size: 1.5rem;
             }
+            
+            .overlay-btn-container {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .overlay-btn {
+                margin: 0;
+                width: 100%;
+            }
         }
     </style>
     <!-- เพิ่ม Font Awesome สำหรับไอคอน -->
@@ -361,7 +421,7 @@
 </head>
 <body>
     <!-- ปุ่มออกที่มุมซ้ายบน -->
-    <button class="exit-btn" id="exit-button">
+    <button class="exit-btn" id="exit-button" onclick="window.location.href='index.html';">
         <i class="fas fa-sign-out-alt"></i> ออก
     </button>
 
@@ -376,6 +436,28 @@
                 กรุณากรอกข้อมูลในฟิลด์ที่จำเป็นให้ครบถ้วนก่อนส่งแบบสำรวจ
             </div>
             <button class="overlay-btn" id="close-overlay-btn">ตกลง</button>
+        </div>
+    </div>
+
+    <!-- Overlay สำหรับยืนยันการออก -->
+    <div class="overlay" id="exit-overlay">
+        <div class="overlay-exit-content">
+            <div class="overlay-icon">
+                <i class="fas fa-door-open"></i>
+            </div>
+            <div class="overlay-title">ยืนยันการออก</div>
+            <div class="overlay-message">
+                คุณต้องการออกจากแบบสำรวจนี้หรือไม่?<br>
+                <span style="color: #ff6b6b; font-weight: 600;">การเปลี่ยนแปลงที่ยังไม่ได้บันทึกจะสูญหาย</span>
+            </div>
+            <div class="overlay-btn-container">
+                <button class="overlay-btn overlay-btn-cancel" id="cancel-exit-btn">
+                    <i class="fas fa-times"></i> ยกเลิก
+                </button>
+                <button class="overlay-btn overlay-btn-exit" id="confirm-exit-btn">
+                    <i class="fas fa-sign-out-alt"></i> ออก
+                </button>
+            </div>
         </div>
     </div>
 
@@ -447,18 +529,18 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="year">สาขาวิชา</label>
-                        <select id="year" class="form-select" required>
+                        <label class="form-label" for="major">สาขาวิชา</label>
+                        <select id="major" class="form-select" required>
                             <option value="">-- เลือกสาขาวิชา --</option>
-                            <option value="1">การบัญชี</option>
-                            <option value="2">คอมพิวเตอร์ธุรกิจ</option>
-                            <option value="3">ไฟฟ้ากำลัง</option>
-                            <option value="4">อิเล็กทรอนิกส์</option>
-                            <option value="5">เครื่องมือกล</option>
-                            <option value="6">การโรงแรม</option>
-                            <option value="7">ธุรกิจดิจิทัล</option>
-                            <option value="8">ธุรกิจค้าปลีก</option>
-                            <option value="9">ช่างก่อสร้าง</option>
+                            <option value="การบัญชี">การบัญชี</option>
+                            <option value="คอมพิวเตอร์ธุรกิจ">คอมพิวเตอร์ธุรกิจ</option>
+                            <option value="ไฟฟ้ากำลัง">ไฟฟ้ากำลัง</option>
+                            <option value="อิเล็กทรอนิกส์">อิเล็กทรอนิกส์</option>
+                            <option value="เครื่องมือกล">เครื่องมือกล</option>
+                            <option value="การโรงแรม">การโรงแรม</option>
+                            <option value="ธุรกิจดิจิทัล">ธุรกิจดิจิทัล</option>
+                            <option value="ธุรกิจค้าปลีก">ธุรกิจค้าปลีก</option>
+                            <option value="ช่างก่อสร้าง">ช่างก่อสร้าง</option>
                         </select>
                     </div>
                 </div>
@@ -471,24 +553,19 @@
                 </div>
                 
                 <div class="rating-container">
-                    <div class="rating-item" data-rating="1">
-                        <div class="rating-emoji">😞</div>
+                    <div class="rating-item" data-rating="1">      
                         <div class="rating-text">ไม่พอใจ (1)</div>
                     </div>
                     <div class="rating-item" data-rating="2">
-                        <div class="rating-emoji">😐</div>
                         <div class="rating-text">พอใช้ (2)</div>
                     </div>
                     <div class="rating-item" data-rating="3">
-                        <div class="rating-emoji">🙂</div>
                         <div class="rating-text">พอใจ (3)</div>
                     </div>
                     <div class="rating-item" data-rating="4">
-                        <div class="rating-emoji">😊</div>
                         <div class="rating-text">พอใจมาก (4)</div>
                     </div>
                     <div class="rating-item" data-rating="5">
-                        <div class="rating-emoji">😍</div>
                         <div class="rating-text">พอใจที่สุด (5)</div>
                     </div>
                 </div>
@@ -528,24 +605,44 @@
             const overlay = document.getElementById('incomplete-overlay');
             const incompleteMessage = document.getElementById('incomplete-message');
             const closeOverlayBtn = document.getElementById('close-overlay-btn');
+            
+            // องค์ประกอบสำหรับ overlay การออก
+            const exitOverlay = document.getElementById('exit-overlay');
+            const cancelExitBtn = document.getElementById('cancel-exit-btn');
+            const confirmExitBtn = document.getElementById('confirm-exit-btn');
 
-            // --- 1. ฟังก์ชันสำหรับปุ่มออก ---
+            // --- 1. ฟังก์ชันสำหรับปุ่มออก (แสดง overlay สวยๆ) ---
             exitButton.addEventListener('click', () => {
-                const confirmExit = confirm('คุณต้องการออกจากแบบสำรวจนี้หรือไม่? การเปลี่ยนแปลงที่ยังไม่ได้บันทึกจะสูญหาย');
-                if (confirmExit) {
-                    // ในที่นี้เราอาจจะนำผู้ใช้ไปยังหน้าอื่น หรือรีเซ็ตฟอร์ม
-                    // สำหรับตัวอย่างนี้ เราจะรีเซ็ตฟอร์มและแสดงข้อความ
-                    form.reset();
-                    ratingItems.forEach(r => r.classList.remove('selected'));
-                    satisfactionRatingInput.value = '';
-                    calculateDuration();
-                    
-                    // แสดงข้อความยืนยัน
-                    alert('คุณได้ออกจากแบบสำรวจแล้ว ฟอร์มถูกรีเซ็ต');
+                exitOverlay.style.display = 'flex';
+            });
+
+            // --- 2. การจัดการ overlay การออก ---
+            cancelExitBtn.addEventListener('click', () => {
+                exitOverlay.style.display = 'none';
+            });
+
+            confirmExitBtn.addEventListener('click', () => {
+                // ปิด overlay
+                exitOverlay.style.display = 'none';
+                
+                // รีเซ็ตฟอร์ม
+                form.reset();
+                ratingItems.forEach(r => r.classList.remove('selected'));
+                satisfactionRatingInput.value = '';
+                calculateDuration();
+                
+                // แสดงข้อความยืนยันสวยๆ
+                showExitConfirmation();
+            });
+
+            // ปิด overlay เมื่อคลิกนอกพื้นที่ content
+            exitOverlay.addEventListener('click', (e) => {
+                if (e.target === exitOverlay) {
+                    exitOverlay.style.display = 'none';
                 }
             });
 
-            // --- 2. ฟังก์ชันสำหรับปิด overlay ---
+            // --- 3. ฟังก์ชันสำหรับปิด overlay ข้อมูลไม่ครบ ---
             closeOverlayBtn.addEventListener('click', () => {
                 overlay.style.display = 'none';
             });
@@ -557,7 +654,7 @@
                 }
             });
 
-            // --- 3. คำนวณระยะเวลา ---
+            // --- 4. คำนวณระยะเวลา ---
             function calculateDuration() {
                 const entryTime = entryTimeInput.value;
                 const exitTime = exitTimeInput.value;
@@ -592,7 +689,7 @@
             entryTimeInput.addEventListener('change', calculateDuration);
             exitTimeInput.addEventListener('change', calculateDuration);
 
-            // --- 4. การเลือกคะแนนความพึงพอใจ ---
+            // --- 5. การเลือกคะแนนความพึงพอใจ ---
             if (ratingItems.length > 0) {
                 ratingItems.forEach(item => {
                     item.addEventListener('click', function() {
@@ -610,7 +707,7 @@
                 });
             }
 
-            // --- 5. ฟังก์ชันตรวจสอบข้อมูลที่กรอกไม่ครบ ---
+            // --- 6. ฟังก์ชันตรวจสอบข้อมูลที่กรอกไม่ครบ ---
             function checkIncompleteFields() {
                 const requiredFields = [
                     { id: 'fullname', name: 'ชื่อ-นามสกุล' },
@@ -652,7 +749,7 @@
                 return incompleteFields;
             }
 
-            // --- 6. การส่งฟอร์ม (จำลอง) ---
+            // --- 7. การส่งฟอร์ม (จำลอง) ---
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
@@ -699,7 +796,7 @@
                 calculateDuration();
             });
 
-            // --- 7. ฟังก์ชันแสดงผลสำเร็จ ---
+            // --- 8. ฟังก์ชันแสดงผลสำเร็จ ---
             function showSuccessMessage() {
                 const originalButton = form.querySelector('button[type="submit"]');
                 const originalText = originalButton.innerHTML;
@@ -716,6 +813,72 @@
                 }, 1500);
             }
 
+            // --- 9. ฟังก์ชันแสดงการยืนยันการออก ---
+            function showExitConfirmation() {
+                // สร้างการแจ้งเตือนแบบ custom แทน alert
+                const exitNotification = document.createElement('div');
+                exitNotification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 10px;
+                    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+                    z-index: 4000;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    animation: slideIn 0.3s ease-out;
+                `;
+                
+                exitNotification.innerHTML = `
+                    <i class="fas fa-check-circle" style="font-size: 1.2rem;"></i>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">ออกจากแบบสำรวจแล้ว</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">ฟอร์มถูกรีเซ็ตเรียบร้อย</div>
+                    </div>
+                `;
+                
+                document.body.appendChild(exitNotification);
+                
+                // อ่านััตโนมัติหลังจาก 3 วินาที
+                setTimeout(() => {
+                    exitNotification.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => {
+                        document.body.removeChild(exitNotification);
+                    }, 300);
+                }, 3000);
+            }
+
+            // เพิ่ม animation สำหรับ notification
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
             // ตั้งค่าเวลาเริ่มต้นและสิ้นสุดให้เป็นเวลาปัจจุบัน
             const now = new Date();
             const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
@@ -728,4 +891,4 @@
         });
     </script>
 </body>
-</html>
+</html
