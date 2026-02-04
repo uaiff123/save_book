@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบห้องสมุด</title>
+    <title>แสดงความคิดเห็น</title>
     <link rel="icon" type="image" href="img/logo2.png">
     
     <style>
@@ -421,63 +421,66 @@
     
     <section class="hero">
         <div class="container">
-            <h1>การแสดงความคิดเห็น</h1>
+            <h1>การลงชื่อเข้าใช้และการแสดงความคิดเห็น</h1>
             <p>ขอขอบคุณพวกท่านที่ได้เข้าใช่เว็บไซต์ที่พวกเราได้สร้าง หากท่านมีความประสงค์อยากเสนอแนะท่านสามารถแสดงความคิดเห็น</p>
             <div class="search-box">
-                <input type="text" placeholder="ค้นหาหนังสือ, เอกสาร, หรือข้อมูล...">
+                <input type="text" placeholder="ชื่อห้อง หรือส่วนนั้นๆ...">
                 <button class="download-btn">ค้นหา</button>
             </div>
-            <button class="download-btn" onclick="window.location.href='#download-btn';">ดูบริการทั้งหมด</button>
+            <button class="download-btn" onclick="window.location.href='#download-btn';">ทั้งหมด</button>
         </div>
     </section>
 
-    <section class="section">
-        <div class="container" id="download-btn">
-            <h2 class="section-title">เช็คชื่อเข้าใช้ตึกวิทยบริการ </h2>
-            <div class="cards-container">
-                <div class="gradient-card card"><h3 style="font-size: 3rem;">8:00 - 16:00</h3></div>
-                
-                <div class="gradient-card card" onclick="window.location.href='library.html';">
-                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <h3>ห้องอินเทอร์เน็ต 1</h3>
-                    <p>การแสดงความคิดเห็น</p>
-                    <span class="badge">เกี่ยวข้อง</span>
-                    <span class="badge">บริการหลัก</span>
-                     <span class="badge">ห้องคอม</span>
-                     <span class="badge">ห้องคอม 1</span>
+<section class="section">
+    <div class="container" id="download-btn">
+        <h2 class="section-title">เช็คชื่อเข้าใช้ตึกวิทยบริการ </h2>
+        <div class="cards-container">
+            <div class="gradient-card card">
+                <h3 style="font-size: 2.5rem;">เวลาทำการ<br>8:00 - 16:00</h3>
+            </div>
+            
+            <div class="gradient-card card" onclick="window.location.href='signin.html';">
+                <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                    <img src="img/com-removebg-preview.png" alt="Internet Room 1" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
+                <h3>ห้องอินเทอร์เน็ต 1</h3>
+                <p>การแสดงความคิดเห็น</p>
+                <span class="badge">เกี่ยวข้อง</span>
+                <span class="badge">บริการหลัก</span>
+                <span class="badge">ห้องคอม</span>
+                <span class="badge">ห้องคอม 1</span>
+            </div>
 
-                    <div class="gradient-card card" onclick="window.location.href='library.html';">
-                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <h3>ห้องอินเทอร์เน็ต 2</h3>
-                 <p>การแสดงความคิดเห็น</p>
-                    <span class="badge">เกี่ยวข้อง</span>
-                    <span class="badge">บริการหลัก</span>
-                     <span class="badge">ห้องคอม</span>
-                     <span class="badge">ห้องคอม 2</span>
+            <div class="gradient-card card" onclick="window.location.href='library.html';">
+                <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                <img src="img/com.png" alt="Library" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
-                    <div class="gradient-card card" onclick="window.location.href='library.html';">
-                    <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <h3>ห้องสมุด และ ห้องพักสำหรับการพักผ่อน</h3>
-                     <p>การแสดงความคิดเห็น</p>
-                    <span class="badge">เกี่ยวข้อง</span>
-                    <span class="badge">บริการหลัก</span>
-                     <span class="badge">ห้องสมุด</span>
-                     <span class="badge">ห้องพักผ่อน</span>
+                <h3>ห้องอินเทอร์เน็ต 2</h3>
+                <p>การแสดงความคิดเห็น</p>
+                <span class="badge">เกี่ยวข้อง</span>
+                <span class="badge">บริการหลัก</span>
+                <span class="badge">ห้องคอม</span>
+                <span class="badge">ห้องคอม 2</span>
+            </div>
+
+            <div class="gradient-card card" onclick="window.location.href='library.html';">
+                <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
+                    <img src="img/library.jpg" alt="Library" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
+                <h3>ห้องสมุด และ ห้องพักสำหรับการพักผ่อน</h3>
+                <p>การแสดงความคิดเห็น</p>
+                <span class="badge">เกี่ยวข้อง</span>
+                <span class="badge">บริการหลัก</span>
+                <span class="badge">ห้องสมุด</span>
+                <span class="badge">ห้องพักผ่อน</span>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <footer>
         <div class="container">
-            <p>เราขอแสดงความขอบคุณที่ท่านได้ใช้บริการของเรา ขอขอบคุณ</p>
+            <p>เราขอแสดงความขอบคุณที่ท่านได้ใช้บริการของเรา ขอขอบคุณอย่างยิ่ง</p>
         </div>
     </footer>
 
