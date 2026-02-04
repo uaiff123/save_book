@@ -4,64 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ห้องอินเทอร์เน็ต 1</title>
+      <link rel="icon" type="image" href="img/logo2.png">
     <style>
         /* --- CSS STYLES --- */
 
-        /* General Body and Scrollbar (unchanged for aesthetics) */
+        /* General Body and Scrollbar - BRIGHTER VERSION */
         body {
-            background: linear-gradient(90deg, #0f0f0f 0%, #1A0033 60%, #663399 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            color: #f0f0f0;
+            color: #333333;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 12px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background-color: #6b7280; border-radius: 6px; border: 3px solid #1a1a1a; }
-        ::-webkit-scrollbar-thumb:hover { background-color: #9ca3af; }
-        * { scrollbar-width: thin; scrollbar-color: #6b7280 #1a1a1a; }
+        ::-webkit-scrollbar-track { background: #e0e0e0; }
+        ::-webkit-scrollbar-thumb { background-color: #8a2be2; border-radius: 6px; border: 3px solid #e0e0e0; }
+        ::-webkit-scrollbar-thumb:hover { background-color: #6a0dad; }
+        * { scrollbar-width: thin; scrollbar-color: #8a2be2 #e0e0e0; }
 
-        /* Animated background bubbles (omitted for brevity, but you can paste back the original) */
-        /* .bg-bubble styles... */ 
-        
-        /* Enhanced Gradient Card (Main Container) */
+        /* Enhanced Gradient Card (Main Container) - BRIGHTER */
         .gradient-card {
-            background: rgba(30, 0, 60, 0.5);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1.5px solid rgba(149, 76, 233, 0.15);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(138, 43, 226, 0.2);
+            border-radius: 20px;
             padding: 2.5rem;
-            box-shadow: 0 8px 24px rgba(99, 45, 165, 0.1), 0 0 12px rgba(149, 76, 233, 0.2);
+            box-shadow: 0 15px 35px rgba(138, 43, 226, 0.1), 0 5px 15px rgba(138, 43, 226, 0.07);
             transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
-            max-width: 700px; /* เพิ่มขนาดเพื่อรองรับฟอร์มที่ใหญ่ขึ้น */
+            max-width: 700px;
             margin: 2rem;
             position: relative;
+            z-index: 10;
         }
 
         .gradient-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 36px rgba(99, 45, 165, 0.15), 0 0 20px rgba(149, 76, 233, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.15), 0 8px 20px rgba(138, 43, 226, 0.1);
         }
 
-        /* Enhanced Button */
+        /* Enhanced Button - BRIGHTER */
         .action-btn {
-            background: linear-gradient(135deg, #7a39fb 0%, #981bfe 100%);
+            background: linear-gradient(135deg, #8a2be2 0%, #9370db 100%);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 0.85rem 1.75rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(122, 57, 251, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 6px 15px rgba(138, 43, 226, 0.25);
+            transition: all 0.3s ease;
             font-size: 1rem;
             display: inline-flex;
             align-items: center;
@@ -70,8 +70,111 @@
         }
 
         .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(152, 27, 254, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(138, 43, 226, 0.35);
+            background: linear-gradient(135deg, #7a1bd8 0%, #8368d1 100%);
+        }
+
+        /* ปุ่มออก (Exit Button) */
+        .exit-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.25);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .exit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 107, 107, 0.35);
+            background: linear-gradient(135deg, #ff5252 0%, #ff7b7b 100%);
+        }
+
+        /* Overlay สำหรับแจ้งเตือนข้อมูลไม่ครบ */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .overlay-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .overlay-icon {
+            font-size: 4rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        .overlay-title {
+            color: #333;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .overlay-message {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .overlay-btn {
+            background: linear-gradient(135deg, #8a2be2 0%, #9370db 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 0.85rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(138, 43, 226, 0.25);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .overlay-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(138, 43, 226, 0.35);
         }
 
         /* Form Styles */
@@ -82,25 +185,25 @@
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #c9a8ff;
-            font-weight: 500;
+            color: #5a4fcf;
+            font-weight: 600;
         }
 
         .form-input, .form-select, .form-textarea {
             width: 100%;
             padding: 0.8rem 1rem;
-            background: rgba(20, 0, 40, 0.6);
-            border: 1px solid rgba(149, 76, 233, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 8px;
-            color: #f0f0f0;
+            color: #333333;
             font-size: 1rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
-            border-color: #7a39fb;
-            box-shadow: 0 0 0 3px rgba(122, 57, 251, 0.2);
+            border-color: #8a2be2;
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.15);
         }
 
         .form-textarea {
@@ -115,28 +218,30 @@
         }
 
         .page-logo {
-            font-size: 2.2rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #7a39fb 0%, #981bfe 100%);
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
         }
 
         .page-subtitle {
-            color: #c9d1d9;
+            color: #666;
             font-size: 1.1rem;
+            font-weight: 500;
         }
 
         /* Form Section */
         .form-section {
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(149, 76, 233, 0.2);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.15);
         }
 
         .form-section-title {
-            color: #c9a8ff;
+            color: #5a4fcf;
             font-size: 1.3rem;
             margin-bottom: 1rem;
             display: flex;
@@ -151,6 +256,16 @@
             gap: 1.5rem;
         }
 
+        /* Duration Display */
+        #duration-display {
+            padding: 0.8rem;
+            background: rgba(138, 43, 226, 0.05);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid rgba(138, 43, 226, 0.1);
+        }
+
         /* Satisfaction Rating */
         .rating-container {
             display: flex;
@@ -162,22 +277,25 @@
             text-align: center;
             flex: 1;
             padding: 0.75rem 0.5rem;
-            background: rgba(20, 0, 40, 0.4);
+            background: rgba(138, 43, 226, 0.05);
             border-radius: 8px;
             margin: 0 0.25rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 1px solid rgba(138, 43, 226, 0.1);
         }
 
         .rating-item:hover {
-            background: rgba(122, 57, 251, 0.2);
+            background: rgba(138, 43, 226, 0.15);
             transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(138, 43, 226, 0.1);
         }
 
         .rating-item.selected {
-            background: rgba(122, 57, 251, 0.6); /* สีเข้มขึ้นเมื่อเลือก */
-            box-shadow: 0 0 10px rgba(122, 57, 251, 0.7);
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(147, 112, 219, 0.3) 100%);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2);
             transform: scale(1.05);
+            border-color: rgba(138, 43, 226, 0.3);
         }
 
         .rating-emoji {
@@ -186,36 +304,9 @@
         }
 
         .rating-text {
-            font-size: 0.8rem;
-            color: #c9d1d9;
-        }
-        
-        /* Book List */
-        .book-list {
-            margin-top: 1rem;
-        }
-
-        .book-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem;
-            background: rgba(20, 0, 40, 0.4);
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-
-        .book-actions button {
-            background: none;
-            border: none;
-            color: #ff6b6b;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: color 0.3s ease;
-        }
-
-        .book-actions button:hover {
-            color: #ee5a52;
+            font-size: 0.85rem;
+            color: #555;
+            font-weight: 500;
         }
 
         /* Responsive Design */
@@ -240,20 +331,60 @@
             }
             
             .rating-item {
-                flex: 0 0 calc(50% - 0.5rem); /* แสดง 2 คอลัมน์บนมือถือ */
+                flex: 0 0 calc(50% - 0.5rem);
                 margin: 0.5rem 0.25rem;
+            }
+            
+            .exit-btn {
+                top: 10px;
+                left: 10px;
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .overlay-content {
+                padding: 1.5rem;
+                width: 85%;
+            }
+            
+            .overlay-icon {
+                font-size: 3rem;
+            }
+            
+            .overlay-title {
+                font-size: 1.5rem;
             }
         }
     </style>
+    <!-- เพิ่ม Font Awesome สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div id="survey-container" class="gradient-card">
-        <div class="page-header" >
-            <div class="page-logo"><i class="fas fa-book-reader"></i> ห้องอินเทอร์เน็ต 1</div>
-            <div class="page-subtitle">บันทึกข้อมูลการเข้าใช้และความพึงพอใจ</div>
-            
+    <!-- ปุ่มออกที่มุมซ้ายบน -->
+    <button class="exit-btn" id="exit-button">
+        <i class="fas fa-sign-out-alt"></i> ออก
+    </button>
+
+    <!-- Overlay สำหรับแจ้งเตือนข้อมูลไม่ครบ -->
+    <div class="overlay" id="incomplete-overlay">
+        <div class="overlay-content">
+            <div class="overlay-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="overlay-title">ข้อมูลยังไม่ครบถ้วน</div>
+            <div class="overlay-message" id="incomplete-message">
+                กรุณากรอกข้อมูลในฟิลด์ที่จำเป็นให้ครบถ้วนก่อนส่งแบบสำรวจ
+            </div>
+            <button class="overlay-btn" id="close-overlay-btn">ตกลง</button>
         </div>
-        <hr style="border-color: rgba(149, 76, 233, 0.2); margin: 0 0 2rem 0;">
+    </div>
+
+    <div id="survey-container" class="gradient-card">
+        <div class="page-header">
+            <div class="page-logo"><i class="fas fa-wifi"></i> ห้องอินเทอร์เน็ต 1</div>
+            <div class="page-subtitle">บันทึกข้อมูลการเข้าใช้และความพึงพอใจ</div>
+        </div>
+        <hr style="border-color: rgba(138, 43, 226, 0.15); margin: 0 0 2rem 0;">
 
         <form id="checkin-survey-form">
             
@@ -275,8 +406,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">ระยะเวลาที่ใช้ในห้องสมุด</label>
-                    <div id="duration-display" style="padding: 0.8rem; background: rgba(20, 0, 40, 0.4); border-radius: 8px; text-align: center; color: #56d364; font-weight: bold;">
+                    <label class="form-label">ระยะเวลาที่ใช้ในห้องอินเทอร์เน็ต</label>
+                    <div id="duration-display">
                         กรุณากรอกเวลาเข้าและเวลาออก
                     </div>
                 </div>
@@ -299,7 +430,7 @@
                     </div>
                 </div>
 
-                <div class="time-user-row">
+                <div class="year-major-row">
                     <div class="form-group">
                         <label class="form-label" for="year">ชั้นปี</label>
                         <select id="year" class="form-select" required>
@@ -316,29 +447,24 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="major">สาขาวิชา</label>
-                        <input type="text" id="major" class="form-input" placeholder="กรอกสาขาวิชา" required>
+                        <label class="form-label" for="year">สาขาวิชา</label>
+                        <select id="year" class="form-select" required>
+                            <option value="">-- เลือกสาขาวิชา --</option>
+                            <option value="1">การบัญชี</option>
+                            <option value="2">คอมพิวเตอร์ธุรกิจ</option>
+                            <option value="3">ไฟฟ้ากำลัง</option>
+                            <option value="4">อิเล็กทรอนิกส์</option>
+                            <option value="5">เครื่องมือกล</option>
+                            <option value="6">การโรงแรม</option>
+                            <option value="7">ธุรกิจดิจิทัล</option>
+                            <option value="8">ธุรกิจค้าปลีก</option>
+                            <option value="9">ช่างก่อสร้าง</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <div class="form-section">
-                <div class="form-section-title">
-            
-                </div>
-                
-                <div class="form-group">
-                   
-                    <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="book-title" class="form-input" placeholder="กรอกชื่อหนังสือที่อ่าน">
-                        <button type="button" id="add-book" class="action-btn" style="white-space: nowrap;">
-
-                        </button>
-                    </div>
-                </div>
-                
-            </div>
-
+            <!-- ส่วนความพึงพอใจที่ทำงานได้แล้ว -->
             <div class="form-section">
                 <div class="form-section-title">
                     <i class="fas fa-star"></i> ระดับความพึงพอใจ
@@ -346,23 +472,23 @@
                 
                 <div class="rating-container">
                     <div class="rating-item" data-rating="1">
-                        
+                        <div class="rating-emoji">😞</div>
                         <div class="rating-text">ไม่พอใจ (1)</div>
                     </div>
                     <div class="rating-item" data-rating="2">
-                      
+                        <div class="rating-emoji">😐</div>
                         <div class="rating-text">พอใช้ (2)</div>
                     </div>
                     <div class="rating-item" data-rating="3">
-                       
+                        <div class="rating-emoji">🙂</div>
                         <div class="rating-text">พอใจ (3)</div>
                     </div>
                     <div class="rating-item" data-rating="4">
-                    
+                        <div class="rating-emoji">😊</div>
                         <div class="rating-text">พอใจมาก (4)</div>
                     </div>
                     <div class="rating-item" data-rating="5">
-                       
+                        <div class="rating-emoji">😍</div>
                         <div class="rating-text">พอใจที่สุด (5)</div>
                     </div>
                 </div>
@@ -376,7 +502,7 @@
                 
                 <div class="form-group">
                     <label class="form-label" for="suggestion">ข้อเสนอแนะเพื่อการปรับปรุง (ไม่บังคับ)</label>
-                    <textarea id="suggestion" class="form-textarea" placeholder="กรอกข้อเสนอแนะเกี่ยวกับการใช้ห้องสมุด"></textarea>
+                    <textarea id="suggestion" class="form-textarea" placeholder="กรอกข้อเสนอแนะเกี่ยวกับการใช้ห้องอินเทอร์เน็ต"></textarea>
                 </div>
             </div>
 
@@ -394,13 +520,44 @@
             const entryTimeInput = document.getElementById('entry-time');
             const exitTimeInput = document.getElementById('exit-time');
             const durationDisplay = document.getElementById('duration-display');
-            const addBookButton = document.getElementById('add-book');
-            const bookTitleInput = document.getElementById('book-title');
-            const bookListContainer = document.getElementById('book-list');
             const ratingItems = document.querySelectorAll('.rating-item');
             const satisfactionRatingInput = document.getElementById('satisfaction-rating');
+            
+            // องค์ประกอบใหม่
+            const exitButton = document.getElementById('exit-button');
+            const overlay = document.getElementById('incomplete-overlay');
+            const incompleteMessage = document.getElementById('incomplete-message');
+            const closeOverlayBtn = document.getElementById('close-overlay-btn');
 
-            // --- 1. คำนวณระยะเวลา ---
+            // --- 1. ฟังก์ชันสำหรับปุ่มออก ---
+            exitButton.addEventListener('click', () => {
+                const confirmExit = confirm('คุณต้องการออกจากแบบสำรวจนี้หรือไม่? การเปลี่ยนแปลงที่ยังไม่ได้บันทึกจะสูญหาย');
+                if (confirmExit) {
+                    // ในที่นี้เราอาจจะนำผู้ใช้ไปยังหน้าอื่น หรือรีเซ็ตฟอร์ม
+                    // สำหรับตัวอย่างนี้ เราจะรีเซ็ตฟอร์มและแสดงข้อความ
+                    form.reset();
+                    ratingItems.forEach(r => r.classList.remove('selected'));
+                    satisfactionRatingInput.value = '';
+                    calculateDuration();
+                    
+                    // แสดงข้อความยืนยัน
+                    alert('คุณได้ออกจากแบบสำรวจแล้ว ฟอร์มถูกรีเซ็ต');
+                }
+            });
+
+            // --- 2. ฟังก์ชันสำหรับปิด overlay ---
+            closeOverlayBtn.addEventListener('click', () => {
+                overlay.style.display = 'none';
+            });
+
+            // ปิด overlay เมื่อคลิกนอกพื้นที่ content
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.style.display = 'none';
+                }
+            });
+
+            // --- 3. คำนวณระยะเวลา ---
             function calculateDuration() {
                 const entryTime = entryTimeInput.value;
                 const exitTime = exitTimeInput.value;
@@ -419,74 +576,99 @@
                     const hours = Math.floor(totalMinutes / 60);
                     const minutes = totalMinutes % 60;
                     
-                    durationDisplay.textContent = totalMinutes > 0 ? 
-                        `${hours} ชั่วโมง ${minutes} นาที` : 
-                        'เวลาออกต้องมากกว่าเวลาเข้า';
-                    
-                    durationDisplay.style.color = totalMinutes > 0 ? '#56d364' : '#f85149';
+                    if (totalMinutes <= 0) {
+                        durationDisplay.textContent = 'เวลาออกต้องมากกว่าเวลาเข้า';
+                        durationDisplay.style.color = '#e74c3c';
+                    } else {
+                        durationDisplay.textContent = `${hours} ชั่วโมง ${minutes} นาที`;
+                        durationDisplay.style.color = '#27ae60';
+                    }
                 } else {
                     durationDisplay.textContent = 'กรุณากรอกเวลาเข้าและเวลาออก';
-                    durationDisplay.style.color = '#c9a8ff';
+                    durationDisplay.style.color = '#8a2be2';
                 }
             }
 
             entryTimeInput.addEventListener('change', calculateDuration);
             exitTimeInput.addEventListener('change', calculateDuration);
 
-            // --- 2. การจัดการรายการหนังสือ ---
-            function addBook(title) {
-                const bookItem = document.createElement('div');
-                bookItem.className = 'book-item';
-                bookItem.innerHTML = `
-                    <span style="flex-grow: 1; word-break: break-word;">${title}</span>
-                    <div class="book-actions">
-                        <button type="button" class="remove-book-btn" title="ลบหนังสือ">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <input type="hidden" name="books[]" value="${title}">
-                `;
-                bookListContainer.appendChild(bookItem);
-                
-                // เพิ่ม Listener สำหรับปุ่มลบ
-                bookItem.querySelector('.remove-book-btn').addEventListener('click', () => {
-                    bookItem.remove();
+            // --- 4. การเลือกคะแนนความพึงพอใจ ---
+            if (ratingItems.length > 0) {
+                ratingItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const ratingValue = this.getAttribute('data-rating');
+                        
+                        // ลบคลาส 'selected' ออกจากทุกอัน
+                        ratingItems.forEach(r => r.classList.remove('selected'));
+                        
+                        // เพิ่มคลาส 'selected' ให้กับรายการที่เลือก
+                        this.classList.add('selected');
+                        
+                        // ตั้งค่าค่าลงใน hidden input
+                        satisfactionRatingInput.value = ratingValue;
+                    });
                 });
             }
 
-            addBookButton.addEventListener('click', () => {
-                const title = bookTitleInput.value.trim();
-                if (title) {
-                    addBook(title);
-                    bookTitleInput.value = '';
-                } else {
-                    alert('กรุณากรอกชื่อหนังสือ');
-                }
-            });
-
-            // --- 3. การเลือกคะแนนความพึงพอใจ ---
-            ratingItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const ratingValue = this.getAttribute('data-rating');
-                    
-                    // ลบคลาส 'selected' ออกจากทุกอัน
-                    ratingItems.forEach(r => r.classList.remove('selected'));
-                    
-                    // เพิ่มคลาส 'selected' ให้กับรายการที่เลือก
-                    this.classList.add('selected');
-                    
-                    // ตั้งค่าค่าลงใน hidden input
-                    satisfactionRatingInput.value = ratingValue;
+            // --- 5. ฟังก์ชันตรวจสอบข้อมูลที่กรอกไม่ครบ ---
+            function checkIncompleteFields() {
+                const requiredFields = [
+                    { id: 'fullname', name: 'ชื่อ-นามสกุล' },
+                    { id: 'student-id', name: 'รหัสนักศึกษา' },
+                    { id: 'year', name: 'ชั้นปี' },
+                    { id: 'major', name: 'สาขาวิชา' },
+                    { id: 'entry-time', name: 'เวลาเข้า' },
+                    { id: 'exit-time', name: 'เวลาออก' }
+                ];
+                
+                const incompleteFields = [];
+                
+                // ตรวจสอบฟิลด์ required
+                requiredFields.forEach(field => {
+                    const element = document.getElementById(field.id);
+                    if (!element.value.trim()) {
+                        incompleteFields.push(field.name);
+                    }
                 });
-            });
+                
+                // ตรวจสอบ rating
+                if (!satisfactionRatingInput.value) {
+                    incompleteFields.push('ระดับความพึงพอใจ');
+                }
+                
+                // ตรวจสอบเวลา (ต้องเข้า < ออก)
+                if (entryTimeInput.value && exitTimeInput.value) {
+                    const [entryHours, entryMinutes] = entryTimeInput.value.split(':').map(Number);
+                    const [exitHours, exitMinutes] = exitTimeInput.value.split(':').map(Number);
+                    
+                    let totalMinutes = (exitHours * 60 + exitMinutes) - (entryHours * 60 + entryMinutes);
+                    if (totalMinutes < 0) totalMinutes += 24 * 60;
+                    
+                    if (totalMinutes <= 0) {
+                        incompleteFields.push('เวลาเข้าและเวลาออกไม่ถูกต้อง');
+                    }
+                }
+                
+                return incompleteFields;
+            }
 
-            // --- 4. การส่งฟอร์ม (จำลอง) ---
+            // --- 6. การส่งฟอร์ม (จำลอง) ---
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
-                // ตรวจสอบความสมบูรณ์ของข้อมูลเบื้องต้น
-                if (!satisfactionRatingInput.value) {
-                    alert('กรุณาเลือกระดับความพึงพอใจ');
+                // ตรวจสอบข้อมูลที่กรอกไม่ครบ
+                const incompleteFields = checkIncompleteFields();
+                
+                if (incompleteFields.length > 0) {
+                    // สร้างข้อความแจ้งเตือน
+                    let message = 'กรุณากรอกข้อมูลในฟิลด์ต่อไปนี้ให้ครบถ้วน:<br><br>';
+                    incompleteFields.forEach((field, index) => {
+                        message += `${index + 1}. ${field}<br>`;
+                    });
+                    
+                    // แสดง overlay
+                    incompleteMessage.innerHTML = message;
+                    overlay.style.display = 'flex';
                     return;
                 }
                 
@@ -501,23 +683,48 @@
                     studentId: document.getElementById('student-id').value,
                     year: document.getElementById('year').value,
                     major: document.getElementById('major').value,
-                    books: Array.from(document.querySelectorAll('.book-list input[name="books[]"]')).map(input => input.value),
                     satisfaction: satisfactionRatingInput.value,
                     suggestion: document.getElementById('suggestion').value,
                 };
 
                 console.log('ข้อมูลที่ส่ง:', formData);
                 
-                alert('ส่งแบบสำรวจเรียบร้อยแล้ว! (ข้อมูลถูกแสดงใน Console Log)');
+                // แสดงผลการส่งสำเร็จ
+                showSuccessMessage();
                 
                 // รีเซ็ตฟอร์ม
                 form.reset();
-                bookListContainer.innerHTML = '';
                 ratingItems.forEach(r => r.classList.remove('selected'));
                 satisfactionRatingInput.value = '';
                 calculateDuration();
             });
 
+            // --- 7. ฟังก์ชันแสดงผลสำเร็จ ---
+            function showSuccessMessage() {
+                const originalButton = form.querySelector('button[type="submit"]');
+                const originalText = originalButton.innerHTML;
+                
+                originalButton.innerHTML = '<i class="fas fa-check"></i> ส่งสำเร็จ!';
+                originalButton.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+                originalButton.disabled = true;
+                
+                setTimeout(() => {
+                    originalButton.innerHTML = originalText;
+                    originalButton.style.background = 'linear-gradient(135deg, #8a2be2 0%, #9370db 100%)';
+                    originalButton.disabled = false;
+                    alert('ส่งแบบสำรวจเรียบร้อยแล้ว! (ข้อมูลถูกแสดงใน Console Log)');
+                }, 1500);
+            }
+
+            // ตั้งค่าเวลาเริ่มต้นและสิ้นสุดให้เป็นเวลาปัจจุบัน
+            const now = new Date();
+            const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            const futureTime = new Date(now.getTime() + 60 * 60 * 1000); // +1 ชั่วโมง
+            const futureTimeStr = futureTime.getHours().toString().padStart(2, '0') + ':' + futureTime.getMinutes().toString().padStart(2, '0');
+            
+            entryTimeInput.value = currentTime;
+            exitTimeInput.value = futureTimeStr;
+            calculateDuration();
         });
     </script>
 </body>
