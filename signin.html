@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบเช็คอินและสำรวจการใช้ห้องสมุด</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>ห้องอินเทอร์เน็ต 1</title>
     <style>
         /* --- CSS STYLES --- */
 
@@ -249,9 +248,10 @@
 </head>
 <body>
     <div id="survey-container" class="gradient-card">
-        <div class="page-header">
-            <div class="page-logo"><i class="fas fa-book-reader"></i> ระบบเช็คอินและสำรวจการใช้ห้องสมุด</div>
+        <div class="page-header" >
+            <div class="page-logo"><i class="fas fa-book-reader"></i> ห้องอินเทอร์เน็ต 1</div>
             <div class="page-subtitle">บันทึกข้อมูลการเข้าใช้และความพึงพอใจ</div>
+            
         </div>
         <hr style="border-color: rgba(149, 76, 233, 0.2); margin: 0 0 2rem 0;">
 
@@ -304,11 +304,14 @@
                         <label class="form-label" for="year">ชั้นปี</label>
                         <select id="year" class="form-select" required>
                             <option value="">เลือกชั้นปี</option>
-                            <option value="1">ปี 1</option>
-                            <option value="2">ปี 2</option>
-                            <option value="3">ปี 3</option>
-                            <option value="4">ปี 4</option>
-                            <option value="อื่นๆ">อื่นๆ</option>
+                            <option value="1">ปวช 1</option>
+                            <option value="2">ปวช 2</option>
+                            <option value="3">ปวช 3</option>
+                            <option value="4">ปวส 1</option>
+                            <option value="5">ปวส 2</option>
+                            <option value="6">ปริญญาตรี</option>
+                            <option value="7">ปริญญาโท</option>
+                            <option value="8">ปริญญาเอก</option>
                         </select>
                     </div>
                     
@@ -321,21 +324,19 @@
 
             <div class="form-section">
                 <div class="form-section-title">
-                    <i class="fas fa-book-open"></i> หนังสือที่อ่าน
+            
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label" for="book-title">ชื่อหนังสือ</label>
+                   
                     <div style="display: flex; gap: 0.5rem;">
                         <input type="text" id="book-title" class="form-input" placeholder="กรอกชื่อหนังสือที่อ่าน">
                         <button type="button" id="add-book" class="action-btn" style="white-space: nowrap;">
-                            <i class="fas fa-plus"></i> เพิ่ม
+
                         </button>
                     </div>
                 </div>
                 
-                <div class="book-list" id="book-list">
-                    </div>
             </div>
 
             <div class="form-section">
