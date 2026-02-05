@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แสดงความคิดเห็น</title>
     <link rel="icon" type="image" href="img/logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* Reset และ base styles - ใช้วิธีที่เบาลง */
@@ -104,6 +105,7 @@
             transition: transform 0.25s ease, box-shadow 0.25s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .gradient-card:hover {
@@ -151,6 +153,8 @@
             border-radius: 12px;
             font-size: 0.85rem;
             font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
         }
 
         /* Layout Styles */
@@ -208,6 +212,7 @@
             color: #666666;
         }
 
+        /* ปรับปรุง Search Box และเพิ่ม Search Overlay */
         .search-box {
             max-width: 600px;
             margin: 2rem auto;
@@ -217,6 +222,8 @@
             padding: 0.5rem;
             border: 1px solid rgba(192, 146, 57, 0.2);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            position: relative;
+            z-index: 50;
         }
 
         .search-box input {
@@ -236,6 +243,84 @@
             border-radius: 8px;
             background: linear-gradient(135deg, #C09239 0%, #D4B15F 100%);
             color: #FFFFFF;
+        }
+
+        /* Search Overlay */
+        .search-overlay {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 10px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .search-result-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(192, 146, 57, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background-color: rgba(255, 245, 224, 0.5);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #C09239 0%, #D4B15F 100%);
+            border-radius: 8px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .result-info h4 {
+            color: #9C7A3A;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-info p {
+            color: #666666;
+            font-size: 0.9rem;
+        }
+
+        .no-results {
+            padding: 2rem;
+            text-align: center;
+            color: #666666;
+        }
+
+        .no-results i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #C09239;
+            opacity: 0.5;
         }
 
         .section {
@@ -264,6 +349,7 @@
         .card p {
             color: #666666;
             line-height: 1.5;
+            margin-bottom: 1rem;
         }
 
         footer {
@@ -274,19 +360,19 @@
             color: #9C7A3A;
             background-color: rgba(255, 255, 255, 0.9);
         }
-/* ขนชาสดจอภาพ ขนาด 360 */
+
+        /* ขนาดจอภาพ ขนาด 360 */
         @media (max-width: 360px) {
             .intro-wrap h1 {
                 font-size: 2.5rem;
             }
         }
-/* ขนชาสดจอภาพ ของมือถือหน้าจอความใหญ่ของขข้อความ */
+
+        /* ขนาดจอภาพของมือถือหน้าจอความใหญ่ของข้อความ */
         @media (max-width: 768px) {
-            
             .hero h1 {
                 font-size: 2rem;
             }
-
 
             .cards-container {
                 grid-template-columns: 1fr;
@@ -306,23 +392,23 @@
             will-change: opacity;
         }
 
-.intro-wrap {
-    position: relative;
-    width: min(85vw, 850px);
-    border-radius: 18px;
-    overflow: hidden;
-    border: 4px solid rgba(192, 146, 57, 0.9);
-    box-shadow: 0 0 25px rgba(192, 146, 57, 0.6);
-    animation: floatUpDown 1.3s ease-in-out infinite;
-    bottom: 23%;
-    
-    /* เพิ่ม 3 บรรทัดนี้ */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem; /* เพิ่มพื้นที่ว่างข้างในให้ดูสวยขึ้น */
-    background: white; /* ใส่พื้นหลังกันโปร่งแสง */
-}
+        .intro-wrap {
+            position: relative;
+            width: min(85vw, 850px);
+            border-radius: 18px;
+            overflow: hidden;
+            border: 4px solid rgba(192, 146, 57, 0.9);
+            box-shadow: 0 0 25px rgba(192, 146, 57, 0.6);
+            animation: floatUpDown 1.3s ease-in-out infinite;
+            bottom: 23%;
+            
+            /* เพิ่ม 3 บรรทัดนี้ */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem; /* เพิ่มพื้นที่ว่างข้างในให้ดูสวยขึ้น */
+            background: white; /* ใส่พื้นหลังกันโปร่งแสง */
+        }
 
         /* ตัวรูป */ 
         .intro-wrap img {
@@ -332,16 +418,14 @@
             object-fit: contain;
             display: block;
             margin: 0 auto;
-}
+        }
 
-.intro-wrap h1 {
-    position: relative;
-    /* width: min(85vw, 850px);  <-- ลบบรรทัดนี้ออก */
-    /* border: 4px solid ...;   <-- ลบบรรทัดนี้ออกถ้าไม่อยากให้หัวข้อมีกรอบแยก */
-    font-size: 3rem;
-    text-align: center;
-    margin-bottom: 1.5rem; /* เพิ่มระยะห่างระหว่างตัวหนังสือกับรูป */
-}
+        .intro-wrap h1 {
+            position: relative;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1.5rem; /* เพิ่มระยะห่างระหว่างตัวหนังสือกับรูป */
+        }
 
         .intro-wrap h1::after {
             content: "";
@@ -358,7 +442,6 @@
             animation: sweep 0.5s ease-in-out 0.15s; /* วิ่งเร็วขึ้นมาก */
         }
 
-        
         /* แสงวิ่งเร็วขึ้น */
         .intro-wrap::after {
             content: "";
@@ -395,6 +478,29 @@
         @keyframes fadeOut {
             to { opacity: 0; visibility: hidden; }
         }
+
+
+        .overlay-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .overlay-btn {
+            background: white;
+            color: #9C7A3A;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .overlay-btn:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -424,22 +530,27 @@
             <h1>การลงชื่อเข้าใช้และการแสดงความคิดเห็น</h1>
             <p>ขอขอบคุณพวกท่านที่ได้เข้าใช่เว็บไซต์ที่พวกเราได้สร้าง หากท่านมีความประสงค์อยากเสนอแนะท่านสามารถแสดงความคิดเห็น</p>
             <div class="search-box">
-                <input type="text" placeholder="ชื่อห้อง เช่น คอม1...">
-                <button class="download-btn">ค้นหา</button>
+                <input type="text" id="search-input" placeholder="ชื่อห้อง เช่น คอม1, ห้องสมุด, ห้องพัก...">
+                <button class="download-btn" id="search-btn">ค้นหา</button>
+                <div class="search-overlay" id="search-results">
+                    <!-- ผลลัพธ์การค้นหาจะแสดงที่นี่ -->
+                </div>
             </div>
-            <button class="download-btn" onclick="window.location.href='#download-btn';">ทั้งหมด</button>
+            <button class="download-btn" onclick="showAllCards()">ทั้งหมด</button>
         </div>
     </section>
 
 <section class="section">
     <div class="container" id="download-btn">
         <h2 class="section-title">เช็คชื่อเข้าใช้ตึกวิทยบริการ </h2>
-        <div class="cards-container">
-            <div class="gradient-card card">
+        <div class="cards-container" id="cards-container">
+            <div class="gradient-card card" id="hours-card">
                 <h3 style="font-size: 2.5rem;">เวลาทำการ<br>8:00 - 16:00</h3>
+                <div >
+                </div>
             </div>
             
-            <div class="gradient-card card" onclick="window.location.href='signin.html';">
+            <div class="gradient-card card" onclick="window.location.href='com1.html';"id="internet1-card">
                 <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
                     <img src="img/com-removebg-preview.png" alt="Internet Room 1" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
@@ -449,9 +560,11 @@
                 <span class="badge">บริการหลัก</span>
                 <span class="badge">ห้องคอม</span>
                 <span class="badge">ห้องคอม 1</span>
+                <div >
+                </div>
             </div>
 
-            <div class="gradient-card card" onclick="window.location.href='library.html';">
+            <div class="gradient-card card" onclick="window.location.href='com2.html';" id="internet2-card">
                 <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
                 <img src="img/com.png" alt="Library" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
@@ -461,9 +574,11 @@
                 <span class="badge">บริการหลัก</span>
                 <span class="badge">ห้องคอม</span>
                 <span class="badge">ห้องคอม 2</span>
+                <div >
+                </div>
             </div>
 
-            <div class="gradient-card card" onclick="window.location.href='library.html';">
+            <div class="gradient-card card" onclick="window.location.href='library.html';" id="library-card">
                 <div class="feature-icon" style="width: 50px; height: 50px; margin-bottom: 1rem;">
                     <img src="img/library.jpg" alt="Library" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
@@ -473,6 +588,8 @@
                 <span class="badge">บริการหลัก</span>
                 <span class="badge">ห้องสมุด</span>
                 <span class="badge">ห้องพักผ่อน</span>
+                <div>
+                </div>
             </div>
         </div>
     </div>
@@ -485,6 +602,34 @@
     </footer>
 
     <script>
+        // ข้อมูลสำหรับการค้นหา
+        const roomData = [
+            {
+                id: 'internet1-card',
+                title: 'ห้องอินเทอร์เน็ต 1',
+                description: 'ห้องคอมพิวเตอร์พร้อมอินเทอร์เน็ตความเร็วสูง ',
+                tags: ['คอม1', 'คอม', 'อินเทอร์เน็ต', 'คอมพิวเตอร์', 'ห้องคอม', 'ห้องคอม 1'],
+                icon: '💻',
+                link: 'com1.html'
+            },
+            {
+                id: 'internet2-card',
+                title: 'ห้องอินเทอร์เน็ต 2',
+                description: 'ห้องคอมพิวเตอร์สำหรับงานกราฟิกและมัลติมิเดีย',
+                tags: ['คอม2', 'คอม', 'อินเทอร์เน็ต', 'คอมพิวเตอร์', 'ห้องคอม', 'ห้องคอม 2', 'กราฟิก'],
+                icon: '🖥️',
+                link: 'com2.html'
+            },
+            {
+                id: 'library-card',
+                title: 'ห้องสมุด และ ห้องพักสำหรับการพักผ่อน',
+                description: 'พื้นที่สำหรับอ่านหนังสือและพักผ่อน',
+                tags: ['ห้องสมุด', 'ห้องพัก', 'พักผ่อน', 'อ่านหนังสือ', 'หนังสือ', 'พัก'],
+                icon: '📚',
+                link: 'library.html'
+            }
+        ];
+
         // Optimized bubble creation with fewer bubbles and better performance
         function createBubbles() {
             const bubblesContainer = document.getElementById('bubbles-container');
@@ -536,26 +681,153 @@
                 timeout = setTimeout(later, wait);
             };
         }
+
+        // ฟังก์ชันค้นหา
+        function performSearch(query) {
+            const searchResults = document.getElementById('search-results');
+            const searchOverlay = document.querySelector('.search-overlay');
+            
+            if (query.trim() === '') {
+                searchOverlay.classList.remove('active');
+                return;
+            }
+            
+            const normalizedQuery = query.toLowerCase().trim();
+            const results = roomData.filter(room => {
+                // ค้นหาจาก title
+                if (room.title.toLowerCase().includes(normalizedQuery)) return true;
+                
+                // ค้นหาจาก tags
+                if (room.tags.some(tag => tag.toLowerCase().includes(normalizedQuery))) return true;
+                
+                // ค้นหาจาก description
+                if (room.description.toLowerCase().includes(normalizedQuery)) return true;
+                
+                return false;
+            });
+            
+            // แสดงผลการค้นหา
+            if (results.length > 0) {
+                let html = '';
+                results.forEach(result => {
+                    html += `
+                        <div class="search-result-item" onclick="scrollToCard('${result.id}')">
+                            <div class="result-icon">${result.icon}</div>
+                            <div class="result-info">
+                                <h4>${result.title}</h4>
+                                <p>${result.description}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                searchResults.innerHTML = html;
+            } else {
+                searchResults.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <p>ไม่พบผลลัพธ์สำหรับ "${query}"</p>
+                        <p>ลองค้นหาด้วยคำอื่นเช่น "คอม1", "ห้องสมุด", "ห้องพัก"</p>
+                    </div>
+                `;
+            }
+            
+            searchOverlay.classList.add('active');
+        }
+
+        // ฟังก์ชันกรองการ์ดตามผลการค้นหา
+        function filterCards(query) {
+            const cards = document.querySelectorAll('.gradient-card');
+            const normalizedQuery = query.toLowerCase().trim();
+            
+            cards.forEach(card => {
+                const cardId = card.id;
+                const room = roomData.find(r => r.id === cardId);
+                
+                if (!room) {
+                    card.style.display = 'block';
+                    return;
+                }
+                
+                const matches = 
+                    room.title.toLowerCase().includes(normalizedQuery) ||
+                    room.tags.some(tag => tag.toLowerCase().includes(normalizedQuery)) ||
+                    room.description.toLowerCase().includes(normalizedQuery);
+                
+                card.style.display = matches ? 'block' : 'none';
+            });
+        }
+
+        // ฟังก์ชันแสดงการ์ดทั้งหมด
+        function showAllCards() {
+            const cards = document.querySelectorAll('.gradient-card');
+            cards.forEach(card => {
+                card.style.display = 'block';
+            });
+            
+            const searchOverlay = document.querySelector('.search-overlay');
+            searchOverlay.classList.remove('active');
+            
+            const searchInput = document.getElementById('search-input');
+            searchInput.value = '';
+        }
+
+        // ฟังก์ชันเลื่อนไปยังการ์ด
+        function scrollToCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) {
+                // เพิ่มเอฟเฟกต์ไฮไลต์
+                card.style.boxShadow = '0 0 0 3px rgba(192, 146, 57, 0.5)';
+                card.style.transition = 'box-shadow 0.3s ease';
+                
+                // เลื่อนไปยังการ์ด
+                card.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+                
+                // ลบเอฟเฟกต์ไฮไลต์หลังจาก 2 วินาที
+                setTimeout(() => {
+                    card.style.boxShadow = '';
+                }, 2000);
+                
+                // ซ่อน search overlay
+                const searchOverlay = document.querySelector('.search-overlay');
+                searchOverlay.classList.remove('active');
+                
+                // เคลียร์ช่องค้นหา
+                const searchInput = document.getElementById('search-input');
+                searchInput.value = '';
+            }
+        }
         
         document.addEventListener('DOMContentLoaded', function() {
             // สร้าง bubbles หลังจากหน้าเว็บโหลดเสร็จ
             setTimeout(createBubbles, 1000);
             
             // Debounced search function
-            const performSearch = debounce(function(query) {
-                if (query.trim() !== '') {
-                    console.log(`กำลังค้นหา: "${query}"`);
-                    // อย่าใช้ alert ใน production
-                }
+            const debouncedSearch = debounce(function(query) {
+                performSearch(query);
+                filterCards(query);
             }, 300);
             
-            const searchButton = document.querySelector('.search-box button');
-            const searchInput = document.querySelector('.search-box input');
+            const searchButton = document.getElementById('search-btn');
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
             
-            searchButton.addEventListener('click', () => performSearch(searchInput.value));
-            searchInput.addEventListener('input', (e) => performSearch(e.target.value));
+            searchButton.addEventListener('click', () => debouncedSearch(searchInput.value));
+            searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
             searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') performSearch(searchInput.value);
+                if (e.key === 'Enter') debouncedSearch(searchInput.value);
+            });
+            
+            // ปิด search overlay เมื่อคลิกนอกพื้นที่
+            document.addEventListener('click', (e) => {
+                const searchOverlay = document.querySelector('.search-overlay');
+                const searchBox = document.querySelector('.search-box');
+                
+                if (!searchBox.contains(e.target) && searchOverlay.classList.contains('active')) {
+                    searchOverlay.classList.remove('active');
+                }
             });
             
             // Intro fade out
