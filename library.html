@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ห้องสมุด</title>
     <link rel="icon" type="image" href="img/logo2.png">
+    <!-- เพิ่ม Font Awesome สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- เพิ่ม Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* --- CSS STYLES --- */
 
@@ -453,12 +457,10 @@
             }
         }
     </style>
-    <!-- เพิ่ม Font Awesome สำหรับไอคอน -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- ปุ่มออกที่มุมซ้ายบน -->
-    <button class="exit-btn" id="exit-button" onclick="window.location.href='index.html';">
+    <button class="exit-btn" id="exit-button"  onclick="window.location.href='index.html';">
         <i class="fas fa-sign-out-alt"></i> ออก
     </button>
 
@@ -543,7 +545,7 @@
                 </div>
                 
                 <div class="time-user-row">
-  <div class="form-group">
+                    <div class="form-group">
                         <label class="form-label" for="fullname">ชื่อ-นามสกุล(คำนำหน้า)</label>
                         <input type="text" id="fullname" class="form-input" placeholder="กรอกคำนำหน้า-ชื่อ-นามสกุล" required>
                     </div>
@@ -632,6 +634,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // ======================
+            // SUPABASE CONFIGURATION
+            // ======================
+            // 🔧 ใช้ Supabase URL และ Key ของคุณที่นี่
+            const SUPABASE_URL = 'https://rbyvxhtntwktcdxligvi.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_PYcF7YtKZKk_luUr0Ifjvg_dpwRKWlT';
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            // ======================
+            // DOM ELEMENTS
+            // ======================
             const form = document.getElementById('checkin-survey-form');
             const entryTimeInput = document.getElementById('entry-time');
             const exitTimeInput = document.getElementById('exit-time');
@@ -650,8 +663,12 @@
             const cancelExitBtn = document.getElementById('cancel-exit-btn');
             const confirmExitBtn = document.getElementById('confirm-exit-btn');
 
+            // ======================
+            // EVENT LISTENERS
+            // ======================
             // --- 1. ฟังก์ชันสำหรับปุ่มออก (แสดง overlay สวยๆ) ---
-            exitButton.addEventListener('click', () => {
+            exitButton.addEventListener('click', (e) => {
+                e.preventDefault();
                 exitOverlay.style.display = 'flex';
             });
 
@@ -672,11 +689,6 @@
                 
                 // แสดงข้อความยืนยันสวยๆ
                 showExitConfirmation();
-                
-                // เด้งกลับไปหน้า index.html หลังจากแสดงข้อความแจ้งเตือน
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
             });
 
             // ปิด overlay เมื่อคลิกนอกพื้นที่ content
@@ -691,13 +703,15 @@
                 overlay.style.display = 'none';
             });
 
-            // ปิด overlay เมื่อคลิกนอกพื้นที่ content
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
                     overlay.style.display = 'none';
                 }
             });
 
+            // ======================
+            // FUNCTIONS
+            // ======================
             // --- 4. คำนวณระยะเวลา ---
             function calculateDuration() {
                 const entryTime = entryTimeInput.value;
@@ -720,13 +734,16 @@
                     if (totalMinutes <= 0) {
                         durationDisplay.textContent = 'เวลาออกต้องมากกว่าเวลาเข้า';
                         durationDisplay.style.color = '#EF4444';
+                        return false; // ระบุว่าเวลาไม่ถูกต้อง
                     } else {
                         durationDisplay.textContent = `${hours} ชั่วโมง ${minutes} นาที`;
                         durationDisplay.style.color = '#10B981';
+                        return true; // ระบุว่าเวลาใช้ได้
                     }
                 } else {
                     durationDisplay.textContent = 'กรุณากรอกเวลาเข้าและเวลาออก';
                     durationDisplay.style.color = '#EA580C';
+                    return false; // ระบุว่าเวลาไม่ครบ
                 }
             }
 
@@ -778,23 +795,16 @@
                 }
                 
                 // ตรวจสอบเวลา (ต้องเข้า < ออก)
-                if (entryTimeInput.value && exitTimeInput.value) {
-                    const [entryHours, entryMinutes] = entryTimeInput.value.split(':').map(Number);
-                    const [exitHours, exitMinutes] = exitTimeInput.value.split(':').map(Number);
-                    
-                    let totalMinutes = (exitHours * 60 + exitMinutes) - (entryHours * 60 + entryMinutes);
-                    if (totalMinutes < 0) totalMinutes += 24 * 60;
-                    
-                    if (totalMinutes <= 0) {
-                        incompleteFields.push('เวลาเข้าและเวลาออกไม่ถูกต้อง');
-                    }
+                const isTimeValid = calculateDuration();
+                if (!isTimeValid && !incompleteFields.includes('เวลาเข้า') && !incompleteFields.includes('เวลาออก')) {
+                    incompleteFields.push('เวลาเข้าและเวลาออกไม่ถูกต้อง');
                 }
                 
                 return incompleteFields;
             }
 
-            // --- 7. การส่งฟอร์ม (จำลอง) ---
-            form.addEventListener('submit', (e) => {
+            // --- 7. การส่งฟอร์ม (บันทึกลง Supabase) ---
+            form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
                 // ตรวจสอบข้อมูลที่กรอกไม่ครบ
@@ -813,49 +823,131 @@
                     return;
                 }
                 
-                calculateDuration(); // คำนวณครั้งสุดท้ายก่อนส่ง
+                // ตรวจสอบเวลาอีกครั้ง
+                if (!calculateDuration()) {
+                    incompleteMessage.innerHTML = 'เวลาเข้าและเวลาออกไม่ถูกต้อง<br>เวลาออกต้องมากกว่าเวลาเข้า';
+                    overlay.style.display = 'flex';
+                    return;
+                }
 
-                // รวบรวมข้อมูล
+                // ดึงข้อมูลจากฟอร์ม
+                const fullname = document.getElementById('fullname').value;
+                const studentId = document.getElementById('student-id').value;
+                const year = document.getElementById('year').value;
+                const major = document.getElementById('major').value;
+                const satisfaction = parseInt(satisfactionRatingInput.value);
+                const suggestion = document.getElementById('suggestion').value;
+                
+                // สร้างวันที่สำหรับ check_in และ check_out
+                const now = new Date();
+                const today = now.toISOString().split('T')[0]; // ได้วันที่แบบ YYYY-MM-DD
+                
+                // รวมวันที่กับเวลา
+                const checkInDateTime = `${today}T${entryTimeInput.value}:00.000Z`;
+                const checkOutDateTime = `${today}T${exitTimeInput.value}:00.000Z`;
+                
+                // ตรวจสอบว่า check_out มากกว่า check_in จริงๆ
+                if (new Date(checkOutDateTime) <= new Date(checkInDateTime)) {
+                    // ถ้าเวลาออกน้อยกว่าหรือเท่ากับเวลาเข้า
+                    const nextDay = new Date(now);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    const tomorrow = nextDay.toISOString().split('T')[0];
+                    const checkOutDateTimeFixed = `${tomorrow}T${exitTimeInput.value}:00.000Z`;
+                    
+                    // ใช้ check_outDateTimeFixed แทน
+                    var finalCheckOut = checkOutDateTimeFixed;
+                } else {
+                    var finalCheckOut = checkOutDateTime;
+                }
+
+                // เตรียมข้อมูลสำหรับบันทึกลงฐานข้อมูล
                 const formData = {
-                    entryTime: entryTimeInput.value,
-                    exitTime: exitTimeInput.value,
-                    duration: durationDisplay.textContent,
-                    fullname: document.getElementById('fullname').value,
-                    studentId: document.getElementById('student-id').value,
-                    year: document.getElementById('year').value,
-                    major: document.getElementById('major').value,
-                    satisfaction: satisfactionRatingInput.value,
-                    suggestion: document.getElementById('suggestion').value,
+                    room_name: 'ห้องสมุด',
+                    check_in: checkInDateTime,
+                    check_out: finalCheckOut,
+                    full_name: fullname,
+                    student_id: studentId,
+                    year_level: year,
+                    major: major,
+                    satisfaction: satisfaction,
+                    comment: suggestion || null, // ถ้าไม่มีข้อเสนอแนะให้เป็น null
+                    created_at: new Date().toISOString()
                 };
 
-                console.log('ข้อมูลที่ส่ง:', formData);
+                console.log('ข้อมูลที่จะบันทึก:', formData);
                 
-                // แสดงผลการส่งสำเร็จ
-                showSuccessMessage();
+                // แสดงสถานะกำลังบันทึก
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังบันทึก...';
+                submitButton.disabled = true;
                 
-                // รีเซ็ตฟอร์ม
-                form.reset();
-                ratingItems.forEach(r => r.classList.remove('selected'));
-                satisfactionRatingInput.value = '';
-                calculateDuration();
+                try {
+                    // บันทึกลงฐานข้อมูล Supabase
+                    const { data, error } = await supabase
+                        .from('room_logs')
+                        .insert([formData])
+                        .select();
+                    
+                    if (error) {
+                        throw error;
+                    }
+                    
+                    console.log('บันทึกข้อมูลสำเร็จ:', data);
+                    
+                    // แสดงผลการส่งสำเร็จ
+                    showSuccessMessage();
+                    
+                    // รีเซ็ตฟอร์ม
+                    form.reset();
+                    ratingItems.forEach(r => r.classList.remove('selected'));
+                    satisfactionRatingInput.value = '';
+                    
+                    // ตั้งค่าเวลาใหม่ให้เป็นเวลาปัจจุบัน
+                    const newNow = new Date();
+                    const currentTime = newNow.getHours().toString().padStart(2, '0') + ':' + newNow.getMinutes().toString().padStart(2, '0');
+                    const futureTime = new Date(newNow.getTime() + 60 * 60 * 1000); // +1 ชั่วโมง
+                    const futureTimeStr = futureTime.getHours().toString().padStart(2, '0') + ':' + futureTime.getMinutes().toString().padStart(2, '0');
+                    
+                    entryTimeInput.value = currentTime;
+                    exitTimeInput.value = futureTimeStr;
+                    calculateDuration();
+                    
+                } catch (error) {
+                    console.error('เกิดข้อผิดพลาดในการบันทึก:', error);
+                    
+                    // แสดงข้อผิดพลาด
+                    submitButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i> เกิดข้อผิดพลาด';
+                    submitButton.style.background = 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)';
+                    
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalButtonText;
+                        submitButton.style.background = 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)';
+                        submitButton.disabled = false;
+                        
+                        // แจ้งเตือนผู้ใช้
+                        incompleteMessage.innerHTML = `เกิดข้อผิดพลาดในการบันทึกข้อมูล:<br>${error.message}`;
+                        overlay.style.display = 'flex';
+                    }, 1500);
+                }
             });
 
             // --- 8. ฟังก์ชันแสดงผลสำเร็จ ---
             function showSuccessMessage() {
-                const originalButton = form.querySelector('button[type="submit"]');
-                const originalText = originalButton.innerHTML;
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
                 
-                originalButton.innerHTML = '<i class="fas fa-check"></i> ส่งสำเร็จ!';
-                originalButton.style.background = 'linear-gradient(135deg, #10B981 0%, #34D399 100%)';
-                originalButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-check"></i> บันทึกสำเร็จ!';
+                submitButton.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
+                submitButton.disabled = true;
+                
+                // แสดงการแจ้งเตือนแบบสวยๆ
+                showNotification('บันทึกข้อมูลสำเร็จ!', 'ข้อมูลถูกบันทึกลงฐานข้อมูลแล้ว', '#10B981');
                 
                 setTimeout(() => {
-                    originalButton.innerHTML = originalText;
-                    originalButton.style.background = 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)';
-                    originalButton.disabled = false;
-                    
-                    // แสดง notification สวยๆ แทน alert
-                    showNotification('ส่งแบบสำรวจเรียบร้อยแล้ว!', 'ข้อมูลถูกบันทึกเรียบร้อย', '#10B981');
+                    submitButton.innerHTML = originalButtonText;
+                    submitButton.style.background = 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)';
+                    submitButton.disabled = false;
                 }, 1500);
             }
 
@@ -944,6 +1036,35 @@
             entryTimeInput.value = currentTime;
             exitTimeInput.value = futureTimeStr;
             calculateDuration();
+            
+            // ======================
+            // TEST CONNECTION
+            // ======================
+            // ทดสอบการเชื่อมต่อฐานข้อมูลเมื่อโหลดหน้า
+            async function testConnection() {
+                try {
+                    const { data, error } = await supabase
+                        .from('room_logs')
+                        .select('id')
+                        .limit(1);
+                    
+                    if (error) {
+                        console.warn('⚠️ การเชื่อมต่อฐานข้อมูลมีปัญหา:', error.message);
+                        showNotification('เชื่อมต่อฐานข้อมูลล้มเหลว', 'กรุณาตรวจสอบการเชื่อมต่อ', '#EF4444');
+                        return false;
+                    }
+                    
+                    console.log('✅ เชื่อมต่อฐานข้อมูลสำเร็จ!');
+                    return true;
+                } catch (err) {
+                    console.error('❌ ข้อผิดพลาดในการเชื่อมต่อ:', err);
+                    showNotification('เชื่อมต่อฐานข้อมูลล้มเหลว', 'กรุณาตรวจสอบการเชื่อมต่อ', '#EF4444');
+                    return false;
+                }
+            }
+            
+            // ทดสอบการเชื่อมต่อ
+            testConnection();
         });
     </script>
 </body>
